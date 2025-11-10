@@ -32,6 +32,18 @@ export default function Sidebar() {
     Inward
   </button>
 
+  <button className='flex gap-1 items-center hover:bg-gray-200 p-2 rounded-lg cursor-pointer  w-full' onClick={()=>navigate('/inventory/selection')} >
+
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+  <rect x="3" y="3" width="7" height="7" stroke="black" strokeWidth="2"/>
+  <rect x="14" y="3" width="7" height="7" stroke="black" strokeWidth="2"/>
+  <rect x="3" y="14" width="7" height="7" stroke="black" strokeWidth="2"/>
+  <rect x="14" y="14" width="7" height="7" stroke="black" strokeWidth="2"/>
+</svg>
+
+    Select
+  </button>
+
   <button className='flex gap-1 items-center hover:bg-gray-200 p-2 cursor-pointer rounded-lg w-full'  onClick={()=>navigate('/inventory/outward')} >
 
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -39,16 +51,6 @@ export default function Sidebar() {
       <path d="M12 3v18"></path>
     </svg>
     Outward
-  </button>
-
-  <button className='flex gap-1 items-center hover:bg-gray-200 p-2 rounded-lg cursor-pointer  w-full' onClick={()=>navigate('/inventory/suppliers')} >
-
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="M16 11c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3z"></path>
-      <path d="M6 11c1.657 0 3-1.343 3-3S7.657 5 6 5 3 6.343 3 8s1.343 3 3 3z"></path>
-      <path d="M3 20c0-2.761 2.239-5 5-5h8c2.761 0 5 2.239 5 5"></path>
-    </svg>
-    Suppliers
   </button>
 
   <button className='flex gap-1 items-center hover:bg-gray-200 p-2 rounded-lg cursor-pointer  w-full' onClick={()=>navigate('/inventory/orders')}>

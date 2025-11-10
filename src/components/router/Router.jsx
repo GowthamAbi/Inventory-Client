@@ -9,7 +9,7 @@ import Outward from '../dashboard/sidepage/Outward.jsx'
 import Orders from '../dashboard/sidepage/Orders.jsx'
 import Reports from '../dashboard/sidepage/Reports.jsx'
 import Option from '../dashboard/option/Option.jsx'
-import Suppliers from '../dashboard/sidepage/Suppliers.jsx'
+import Selection from '../dashboard/sidepage/Selection.jsx'
 import Sales from '../dashboard/sidepage/Sales.jsx'
 import Settings from '../dashboard/sidepage/Settings.jsx'
 import Inward from '../dashboard/sidepage/Inward.jsx'
@@ -37,7 +37,7 @@ export default function Router() {
             <Route path='orders' element={<Orders />} />
             <Route path='sales' element={<Sales />} />
             <Route path='inward' element={<Inward/>} />
-            <Route path='suppliers' element={<Suppliers />} />
+            <Route path='selection' element={<Selection />} />
             <Route path='reports' element={<Reports />} />
             <Route path='settings' element={<Settings />} />
             </Route>
