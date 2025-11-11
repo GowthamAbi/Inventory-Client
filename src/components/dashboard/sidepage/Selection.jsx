@@ -20,7 +20,7 @@ const navigate = useNavigate();
   const handleSubmit=async(e)=>{
 e.preventDefault()
 try {
-  
+  console.log(data)
   const fabric=await api.post('/inventory/selection',data)
   setUserData(fabric.data)
 console.log({"data":userData})
@@ -53,7 +53,8 @@ console.log({"data":userData})
         type="text"
         required
         name="FABRIC_GROUP"
-        className="border border-gray-300 rounded-lg px-3 py-2 text-center focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all"
+        className="border border-gray-300 rounded-lg px-3 py-2 text-center
+         focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all"
         value={data.FABRIC_GROUP || ""}
         onChange={handleChange}
       />
@@ -65,7 +66,8 @@ console.log({"data":userData})
         type="text"
         required
         name="COLOR_NAME"
-        className="border border-gray-300 rounded-lg px-3 py-2 text-center focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all"
+        className="border border-gray-300 rounded-lg px-3 py-2 text-center
+         focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all"
         value={data.COLOR_NAME || ""}
         onChange={handleChange}
       />
@@ -73,7 +75,8 @@ console.log({"data":userData})
 
     <button
       type="submit"
-      className="bg-amber-400 hover:bg-amber-500 text-white font-semibold px-6 py-2 rounded-lg shadow transition-all"
+      className="bg-amber-400 hover:bg-amber-500 text-white 
+      font-semibold px-6 py-2 rounded-lg shadow transition-all"
     >
       ENTER
     </button>

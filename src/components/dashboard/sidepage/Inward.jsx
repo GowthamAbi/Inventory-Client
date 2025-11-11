@@ -79,14 +79,17 @@ try {
                       name={item}
                       value={userData[item] || ""}
                       onChange={handleChange}
-                      placeholder={`Enter ${item}`}
-                      className="w-2/3 border border-gray-300 text-center text-gray-700 rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all"
+                      placeholder={`ENTER ${item}`}
+                      className="w-2/3 border border-gray-300 text-center text-gray-700 
+                      rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400
+                       focus:border-blue-400 transition-all"
                     />
                   </div>
                 ))}
               </div>
 
-               <button className='text-center border-2 bg-blue-200 text-white text-xl hover:bg-blue-300 cursor-pointer p-2 rounded-xl w-full'>SUBMIT</button>
+               <button className='text-center border-2 bg-blue-200 text-white text-xl
+                hover:bg-blue-300 cursor-pointer p-2 rounded-xl w-full'>SUBMIT</button>
             </form>
    
         </div>
