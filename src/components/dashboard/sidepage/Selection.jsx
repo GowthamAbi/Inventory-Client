@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import api from '../../../services/api';
 import { useState } from 'react';
+import Orders from './Orders';
 
 export default function Products() {
 
@@ -36,8 +37,8 @@ console.log({"data":userData})
 
       const handleNextPage = () => {
     if (selectedRow !== null) {
-   
-      navigate("/inventory/orders", { state: userData[selectedRow] });
+      <Orders data={selectedRow}/>
+      navigate("/inventory/orders");
     }
   };
   return (

@@ -1,44 +1,72 @@
-import React from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import React from 'react'
 
 export default function Orders() {
-  const { state } = useLocation();
-  const navigate = useNavigate();
-
-  if (!state) {
-    return (
-      <div className="p-4 text-center">
-        <p>No data found. Please go back and select a record.</p>
-        <button
-          onClick={() => navigate(-1)}
-          className="mt-3 px-4 py-2 bg-blue-600 text-white rounded"
-        >
-          Go Back
-        </button>
-      </div>
-    );
-  }
-
   return (
-    <div className="p-6">
-      <h2 className="text-xl font-bold mb-4">Fabric Details</h2>
-      <table className="border border-gray-300 min-w-[300px]">
-        <tbody>
-          {Object.entries(state).map(([key, value]) => (
-            <tr key={key}>
-              <td className="border px-4 py-2 font-semibold">{key}</td>
-              <td className="border px-4 py-2">{value}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      <button
-        onClick={() => navigate(-1)}
-        className="mt-4 px-4 py-2 bg-gray-600 text-white rounded"
-      >
-        Back
-      </button>
-    </div>
-  );
-}
+    <div className='grid grid-cols-6 border border-gray-400 gap-0 w-full text-center uppercase   '>
+  
+  <h1 className='col-span-6 border border-gray-400 flex justify-center items-center text-2xl  '>R AND R TEXTILE</h1>
+  <h1 className='col-span-6 border border-gray-400 flex justify-center items-center  text-2xl '>RRP3 LAY CUTTING</h1>
 
+  {/* LEFT LABELS */}
+  <div className='col-span-1'>
+    <ol className="grid grid-rows-6">
+      <h1 className='border border-gray-400'>lot gsm</h1>
+      <h1 className='border border-gray-400'>r gsm</h1>
+      <h1 className='border border-gray-400'>dc no</h1>
+      <h1 className='border border-gray-400'>set no</h1>
+      <h1 className='border border-gray-400'>item</h1>
+      <h1 className='border border-gray-400'>size</h1>
+    </ol>
+  </div>
+
+  {/* LEFT INPUTS */}
+  <div className='border col-span-2 grid grid-rows-6'>
+    <input type="text" className='border' />
+    <input type="text" className='border' />
+    <input type="text" className='border' />
+    <input type="text" className='border' />
+    <input type="text" className='border' />
+    <input type="text" className='border' />
+  </div>
+
+  {/* RIGHT LABELS */}
+  <div className='col-span-1'>
+    <ol className="grid grid-rows-6">
+      <h1 className='border border-gray-400'>T Dia</h1>
+      <h1 className='border border-gray-400'>j or no</h1>
+      <h1 className='border border-gray-400'>c p no</h1>
+      <h1 className='border border-gray-400'>pcs</h1>
+      <h1 className='border border-gray-400'>date</h1>
+      <h1 className='border border-gray-400'>dia</h1>
+    </ol>
+  </div>
+
+  {/* RIGHT INPUTS */}
+  <div className='border col-span-2 grid grid-rows-6'>
+    <input type="text" className='border' />
+    <input type="text" className='border' />
+    <input type="text" className='border' />
+    <input type="text" className='border' />
+    <input type="text" className='border' />
+    <input type="text" className='border' />
+  </div>
+
+  <div className='border col-span-6 grid grid-cols-6 m-0'>
+    <h1>quality</h1>
+    <input type="text" className='border col-span-5'  />
+  </div>
+
+<div className="grid grid-cols-6 col-span-6 place-items-center border">
+  <h1 className='border w-full h-full  flex items-center justify-center'>s no</h1>
+  <h1>batch no</h1>
+  <h1>colour</h1>
+  <h1>roll</h1>
+  <h1>weight</h1>
+  <h1>gsm</h1>
+</div>
+
+
+</div>
+
+  )
+}

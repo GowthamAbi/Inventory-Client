@@ -63,13 +63,13 @@ try {
     <section className=' p-4 w-full'>
         <div>
            <form className='w-full space-y-2' onSubmit={handleSubmit}>
-              <div className="max-w-3xl mx-auto bg-white shadow-lg rounded-2xl p-6 space-y-4">
+              <div className=" bg-white shadow-lg rounded-2xl p-6 space-y-4">
                 {title.map((item, index) => (
                   <div
                     key={index}
-                    className="flex items-center justify-between gap-4 border-b pb-3"
+                    className="flex gap-4 border-b pb-3"
                   >
-                    <div className="flex items-center gap-2 w-1/3">
+                    <div className="flex items-center gap-2 w-1/8">
                       <span className="text-lg font-semibold text-gray-700">{index + 1}.</span>
                       <label className="text-lg font-medium text-gray-800">{item}</label>
                     </div>
@@ -80,9 +80,8 @@ try {
                       value={userData[item] || ""}
                       onChange={handleChange}
                       placeholder={`ENTER ${item}`}
-                      className="w-2/3 border border-gray-300 text-center text-gray-700 
-                      rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400
-                       focus:border-blue-400 transition-all"
+                      className="w-7/8  text-center text-gray-700 
+                      rounded-xl px-3 py-2 focus:outline-none "
                     />
                   </div>
                 ))}
