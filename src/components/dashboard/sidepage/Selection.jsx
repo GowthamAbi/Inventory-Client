@@ -1,12 +1,12 @@
-import { useNavigate } from 'react-router-dom';
 import api from '../../../services/api';
-import { useState } from 'react';
-import Orders from './Orders';
+import { useContext, useState } from 'react';
+import { DataContext } from '../../../DataContext/DataContext';
 
 export default function Products() {
 
 const [userData, setUserData] = useState([]);
-const navigate = useNavigate();
+const{setSelectData}=useContext(DataContext)
+
 
   const[data,setData]=useState({
     FABRIC_GROUP: "",
@@ -35,12 +35,14 @@ console.log({"data":userData})
 
     const [selectedRow, setSelectedRow] = useState(null);
 
-      const handleNextPage = () => {
-    if (selectedRow !== null) {
-      <Orders data={selectedRow}/>
-      navigate("/inventory/orders");
-    }
-  };
+const addItem=()=>{
+setUserData([]),
+  setData({
+    FABRIC_GROUP: "",
+    COLOR_NAME:""
+  })
+}
+
   return (
     <div className="p-4">
   {/* FORM SECTION */}
@@ -108,7 +110,10 @@ console.log({"data":userData})
                 ? "bg-blue-100"
                 : "hover:bg-gray-50"
             }`}
-            onClick={() => setSelectedRow(index)}
+            onClick={() => (
+              setSelectData(pre=>[...pre,item]),
+              setSelectedRow(index)
+            )}
           >
             <td className="border px-4 py-2">{index + 1}</td>
             <td className="border px-4 py-2">{item.DOC_NO}</td>
@@ -127,7 +132,7 @@ console.log({"data":userData})
   {/* BUTTON SECTION */}
   <div className="flex justify-center mt-6">
     <button
-      onClick={handleNextPage}
+    onClick={addItem}
       className={`px-6 py-2 rounded-lg font-semibold text-white shadow transition-all ${
         selectedRow !== null
           ? "bg-blue-600 hover:bg-blue-700"

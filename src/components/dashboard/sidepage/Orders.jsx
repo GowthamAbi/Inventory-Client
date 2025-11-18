@@ -61,8 +61,8 @@ export default function Orders() {
   <h1>batch no</h1>
   <h1>colour</h1>
   <h1>roll</h1>
-  <h1>weight</h1>
-  <h1>gsm</h1>
+  <h1>system weight</h1>
+  <h1>physical weight</h1>
 </div>
 
 
