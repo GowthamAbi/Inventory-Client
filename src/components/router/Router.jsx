@@ -6,13 +6,13 @@ import HeroSection from '../Hero/HeroSection.jsx'
 import Navbar from '../navbar/Navbar.jsx'
 import Dashboard from '../dashboard/sidepage/Dashboard.jsx'
 import Outward from '../dashboard/sidepage/Outward.jsx'
-import Orders from '../dashboard/sidepage/Orders.jsx'
+import List from '../dashboard/sidepage/List.jsx'
 import Reports from '../dashboard/sidepage/Reports.jsx'
 import Option from '../dashboard/option/Option.jsx'
 import Selection from '../dashboard/sidepage/Selection.jsx'
-import Sales from '../dashboard/sidepage/Sales.jsx'
 import Settings from '../dashboard/sidepage/Settings.jsx'
 import Inward from '../dashboard/sidepage/Inward.jsx'
+import Print from '../dashboard/sidepage/Print.jsx'
 
 
 export default function Router() {
@@ -34,8 +34,8 @@ export default function Router() {
             <Route path='/inventory' element={<Option/>} >
             <Route index path='dashboard' element={<Dashboard/>}/>
             <Route path='outward' element={<Outward />} />
-            <Route path='orders' element={<Orders />} />
-            <Route path='sales' element={<Sales />} />
+            <Route path='list' element={<List />} />
+            <Route path='print' element={<Print />} />
             <Route path='inward' element={<Inward/>} />
             <Route path='selection' element={<Selection />} />
             <Route path='reports' element={<Reports />} />

@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function Orders() {
+export default function CuttingPrint() {
   return (
     <div className='grid grid-cols-6 border border-gray-400 gap-0 w-full text-center uppercase   '>
   

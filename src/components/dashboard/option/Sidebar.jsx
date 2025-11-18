@@ -1,8 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 export default function Sidebar() {
   const navigate=useNavigate()
+ const [open,setOpen]=useState(false)
+ const [active, setActive] = useState("fabric");
   return (
     <div className=' pl-2  border-r-2 border-gray-200'>
     <ul className='py-4 '  >
@@ -53,7 +55,7 @@ export default function Sidebar() {
     Outward
   </button>
 
-  <button className='flex gap-1 items-center hover:bg-gray-200 p-2 rounded-lg cursor-pointer  w-full' onClick={()=>navigate('/inventory/orders')}>
+  <button className='flex gap-1 items-center hover:bg-gray-200 p-2 rounded-lg cursor-pointer  w-full' onClick={()=>navigate('/inventory/list')}>
 
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <path d="M9 11h6"></path>
@@ -62,17 +64,41 @@ export default function Sidebar() {
       <path d="M16 4h-1.5a2 2 0 0 0-3 0H9"></path>
       <rect x="3" y="5" width="18" height="16" rx="2"></rect>
     </svg>
-    Orders
+    List
   </button>
 
-  <button className='flex gap-1 items-center hover:bg-gray-200 p-2 rounded-lg cursor-pointer  w-full' onClick={()=>navigate('/inventory/sales')}>
+  <button className='flex gap-1 items-center hover:bg-gray-200 p-2 rounded-lg cursor-pointer  w-full' onClick={()=>(navigate('/inventory/print'),setOpen(!open))}>
 
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <polyline points="3 17 9 11 13 15 21 7"></polyline>
       <polyline points="14 7 21 7 21 14"></polyline>
     </svg>
-    Sales
+    Print
   </button>
+
+  {open && 
+
+<div className="flex gap-2 items-center flex-col">
+  <button
+    onClick={() => setActive("fabric")}
+    className={`flex-1 p-2 rounded-lg w-full cursor-pointer ${
+      active === "fabric" ? "bg-blue-500 text-white" : "hover:bg-gray-200"
+    }`}
+  >
+    Fabric
+  </button>
+
+  <button
+    onClick={() => setActive("cutting")}
+    className={`flex-1 p-2 w-full rounded-lg cursor-pointer ${
+      active === "cutting" ? "bg-blue-500 text-white" : "hover:bg-gray-200"
+    }`}
+  >
+    Cutting
+  </button>
+</div>
+
+      }
 
   <button className='flex gap-1 items-center hover:bg-gray-200 p-2 rounded-lg  cursor-pointer  w-full' onClick={()=>navigate('/inventory/reports')} >
 
