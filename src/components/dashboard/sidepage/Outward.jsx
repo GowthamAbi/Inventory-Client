@@ -20,6 +20,7 @@ export default function Outward() {
         DOC_NO: row.DOC_NO,
         FABRIC_GROUP: row.FABRIC_GROUP,
         COLOR_NAME: row.COLOR_NAME,
+        SET_NO:row.SET_NO,
         RECD_DC_ROLL: row.RECD_DC_ROLL,
         RECD_DC_WGT: row.RECD_DC_WGT,
 
@@ -94,6 +95,7 @@ const handleSubmit = async (e) => {
               <th className="border px-4 py-2">DOC NO</th>
               <th className="border px-4 py-2">FABRIC GROUP</th>
               <th className="border px-4 py-2">COLOR_NAME</th>
+              <th className="border px-4 py-2">set no</th>
               <th className="border px-4 py-2">ROLL</th>
               <th className="border px-4 py-2">WEIGHT</th>
 
@@ -116,6 +118,7 @@ const handleSubmit = async (e) => {
                 <td className="border px-4 py-2">{data.DOC_NO}</td>
                 <td className="border px-4 py-2">{data.FABRIC_GROUP}</td>
                 <td className="border px-4 py-2">{data.COLOR_NAME}</td>
+                <td className="border px-4 py-2">{data.SET_NO}</td>
                 <td className="border px-4 py-2">{data.RECD_DC_ROLL}</td>
                 <td className="border px-4 py-2">{data.RECD_DC_WGT}</td>
 
