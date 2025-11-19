@@ -5,14 +5,15 @@ import api from "../../../services/api";
 export default function Outward() {
   const { selectData, setSelectData } = useContext(DataContext);
 
-  // ❗ Changed: userData is now an ARRAY (not object)
   const [userData, setUserData] = useState([]);
+
+const[size,setSize]=useState([])
 
   if (!selectData) return <h3>No data received</h3>;
 
-  // ----------------------------------------------
-  // 1️⃣ Populate userData when selectData loads
-  // ----------------------------------------------
+  // ----------------------------------------------------
+  // 1️⃣ Load incoming table rows → convert to editable rows
+  // ----------------------------------------------------
   useEffect(() => {
     if (selectData && selectData.length > 0) {
       const mapped = selectData.map((row) => ({
@@ -20,73 +21,88 @@ export default function Outward() {
         DOC_NO: row.DOC_NO,
         FABRIC_GROUP: row.FABRIC_GROUP,
         COLOR_NAME: row.COLOR_NAME,
-        SET_NO:row.SET_NO,
+        SET_NO: row.SET_NO,
         RECD_DC_ROLL: row.RECD_DC_ROLL,
         RECD_DC_WGT: row.RECD_DC_WGT,
 
-        // Editable fields (initially empty)
+        // Editable fields
         ROLL: "",
         WGT: "",
         ITEM_CODE: "",
         ITEM_NAME: "",
         STYLE: "",
-        SIZE: "",
+        SIZE: {
+                first_size: "",
+                first_size_pcs_wt: "",
+                first_size_fab_wt: ""
+              },
+        PCS_WEIGHT: "",
+        WEIGHT: "",
       }));
 
       setUserData(mapped);
     }
   }, [selectData]);
 
-  // ----------------------------------------------
-  // 2️⃣ Handle input update for a specific row
-  // ----------------------------------------------
-  const handleChange = (index, e) => {
-    const { name, value } = e.target;
-
+  // ----------------------------------------------------
+  // 2️⃣ Main handler for updating each row
+  // ----------------------------------------------------
+  const handleChange = (index, field, value) => {
     setUserData((prev) => {
       const updated = [...prev];
-      updated[index][name] = value;
+      updated[index] = { ...updated[index], [field]: value };
       return updated;
     });
   };
 
-  // ----------------------------------------------
-  // 3️⃣ Remove row from BOTH tables
-  // ----------------------------------------------
-  const handleRemove = (index) => {
-    const updatedSelect = selectData.filter((_, i) => i !== index);
-    const updatedUser = userData.filter((_, i) => i !== index);
 
-    setSelectData(updatedSelect);
-    setUserData(updatedUser);
-  };
+  const handleSizeChange = (index, field, value) => {
+  setUserData(prev => {
+    const updated = [...prev];
 
-  // ----------------------------------------------
-  // 4️⃣ Submit final outward data
-  // ----------------------------------------------
-const handleSubmit = async (e) => {
-  e.preventDefault();
+    updated[index] = {
+      ...updated[index],
+      SIZE: {
+        ...updated[index].SIZE,
+        [field]: value
+      }
+    };
 
-  try {
-    const response = await api.post('/inventory/outward', { items: userData });
-
-    console.log("Submitted:", userData);
-
-    // Clear both tables
-    setSelectData([]);
-    setUserData([]);
-
-    alert("Outward saved successfully!");
-
-  } catch (error) {
-    console.log("Outward Error:", error);
-  }
+    return updated;
+  });
 };
 
+  // ----------------------------------------------------
+  // 3️⃣ Remove row
+  // ----------------------------------------------------
+  const handleRemove = (index) => {
+    setSelectData((prev) => prev.filter((_, i) => i !== index));
+    setUserData((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  // ----------------------------------------------------
+  // 4️⃣ Submit to backend
+  // ----------------------------------------------------
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      await api.post("/inventory/outward", { items: userData });
+
+      console.log("Submitted:", userData);
+
+      setSelectData([]);
+      setUserData([]);
+
+      alert("Outward saved successfully!");
+    } catch (error) {
+      console.log("Outward Error:", error);
+    }
+  };
 
   return (
     <div className="overflow-x-auto uppercase p-4 flex flex-col items-center justify-center">
-      {/* DISPLAY TABLE ONLY IF DATA EXISTS */}
+
       {selectData.length > 0 && (
         <table className="min-w-full border">
           <thead>
@@ -94,107 +110,130 @@ const handleSubmit = async (e) => {
               <th className="border px-4 py-2">Id</th>
               <th className="border px-4 py-2">DOC NO</th>
               <th className="border px-4 py-2">FABRIC GROUP</th>
-              <th className="border px-4 py-2">COLOR_NAME</th>
-              <th className="border px-4 py-2">set no</th>
-              <th className="border px-4 py-2">ROLL</th>
-              <th className="border px-4 py-2">WEIGHT</th>
+              <th className="border px-4 py-2">COLOR</th>
+              <th className="border px-4 py-2">SET NO</th>
 
               <th className="border px-4 py-2">ROLL</th>
               <th className="border px-4 py-2">WGT</th>
+
+              <th className="border px-4 py-2">NEW ROLL</th>
+              <th className="border px-4 py-2">NEW WGT</th>
+
               <th className="border px-4 py-2">Item Code</th>
               <th className="border px-4 py-2">Item Name</th>
               <th className="border px-4 py-2">Style</th>
-              <th className="border px-4 py-2">Size</th>
 
-              <th className="border px-4 py-2">Add</th>
+              <th className="border px-4 py-2">Size</th>
               <th className="border px-4 py-2">Remove</th>
             </tr>
           </thead>
 
           <tbody>
-            {selectData.map((data, index) => (
+            {userData.map((row, index) => (
               <tr key={index}>
-                <td className="border px-4 py-2">{data._id}</td>
-                <td className="border px-4 py-2">{data.DOC_NO}</td>
-                <td className="border px-4 py-2">{data.FABRIC_GROUP}</td>
-                <td className="border px-4 py-2">{data.COLOR_NAME}</td>
-                <td className="border px-4 py-2">{data.SET_NO}</td>
-                <td className="border px-4 py-2">{data.RECD_DC_ROLL}</td>
-                <td className="border px-4 py-2">{data.RECD_DC_WGT}</td>
+                <td className="border px-4 py-2">{row._id}</td>
+                <td className="border px-4 py-2">{row.DOC_NO}</td>
+                <td className="border px-4 py-2">{row.FABRIC_GROUP}</td>
+                <td className="border px-4 py-2">{row.COLOR_NAME}</td>
+                <td className="border px-4 py-2">{row.SET_NO}</td>
 
-                {/* Editable Inputs */}
+                <td className="border px-4 py-2">{row.RECD_DC_ROLL}</td>
+                <td className="border px-4 py-2">{row.RECD_DC_WGT}</td>
+
+                {/* Editable Fields */}
                 <td className="border">
                   <input
-                    type="text"
-                    name="ROLL"
-                    value={userData[index]?.ROLL || ""}
-                    onChange={(e) => handleChange(index, e)}
-                    className="outline-none w-full h-full block px-1"
+                    value={row.ROLL}
+                    onChange={(e) =>
+                      handleChange(index, "ROLL", e.target.value)
+                    }
+                    className="outline-none w-full px-1"
                   />
                 </td>
 
                 <td className="border">
                   <input
-                    type="text"
-                    name="WGT"
-                    value={userData[index]?.WGT || ""}
-                    onChange={(e) => handleChange(index, e)}
-                    className="outline-none w-full h-full block px-1"
+                    value={row.WGT}
+                    onChange={(e) =>
+                      handleChange(index, "WGT", e.target.value)
+                    }
+                    className="outline-none w-full px-1"
                   />
                 </td>
 
                 <td className="border">
                   <input
-                    type="text"
-                    name="ITEM_CODE"
-                    value={userData[index]?.ITEM_CODE || ""}
-                    onChange={(e) => handleChange(index, e)}
-                    className="outline-none w-full h-full block px-1"
+                    value={row.ITEM_CODE}
+                    onChange={(e) =>
+                      handleChange(index, "ITEM_CODE", e.target.value)
+                    }
+                    className="outline-none w-full px-1"
                   />
                 </td>
 
                 <td className="border">
                   <input
-                    type="text"
-                    name="ITEM_NAME"
-                    value={userData[index]?.ITEM_NAME || ""}
-                    onChange={(e) => handleChange(index, e)}
-                    className="outline-none w-full h-full block px-1"
+                    value={row.ITEM_NAME}
+                    onChange={(e) =>
+                      handleChange(index, "ITEM_NAME", e.target.value)
+                    }
+                    className="outline-none w-full px-1"
                   />
                 </td>
 
                 <td className="border">
                   <input
-                    type="text"
-                    name="STYLE"
-                    value={userData[index]?.STYLE || ""}
-                    onChange={(e) => handleChange(index, e)}
-                    className="outline-none w-full h-full block px-1"
+                    value={row.STYLE}
+                    onChange={(e) =>
+                      handleChange(index, "STYLE", e.target.value)
+                    }
+                    className="outline-none w-full px-1"
                   />
                 </td>
 
-                <td className="border">
-                  <input
-                    type="text"
-                    name="SIZE"
-                    value={userData[index]?.SIZE || ""}
-                    onChange={(e) => handleChange(index, e)}
-                    className="outline-none w-full h-full block px-1"
-                  />
-                </td>
+                {/* SIZE + POPUP */}
+                <td className="border relative">
 
-                {/* Add Button */}
-                <td className="border px-4 text-center">
-                  <button className="bg-green-500 text-white px-2 py-1 rounded cursor-pointer">
-                    Add
-                  </button>
-                </td>
+  {/* SIZE main field */}
+  <input
+    value={userData[index]?.SIZE.first_size || ""}
+    onChange={(e) =>
+      handleSizeChange(index, "first_size", e.target.value)
+    }
+    className="outline-none w-full px-1"
+  />
 
-                {/* Remove Button */}
-                <td className="border px-4 text-center">
+  {/* POPUP BOX */}
+  <div className="absolute left-0 top-full bg-white border p-1 shadow-md w-44 z-10">
+    <label className="text-xs">75</label>
+
+    <input
+      placeholder="pcs weight"
+      value={userData[index]?.SIZE.first_size_pcs_wt || ""}
+      onChange={(e) =>
+        handleSizeChange(index, "first_size_pcs_wt", e.target.value)
+      }
+      className="border w-full px-1 text-xs my-1"
+    />
+
+    <input
+      placeholder="fabric weight"
+      value={userData[index]?.SIZE.first_size_fab_wt || ""}
+      onChange={(e) =>
+        handleSizeChange(index, "first_size_fab_wt", e.target.value)
+      }
+      className="border w-full px-1 text-xs"
+    />
+  </div>
+
+</td>
+
+
+                {/* Remove button */}
+                <td className="border px-4 py-2 text-center">
                   <button
                     onClick={() => handleRemove(index)}
-                    className="bg-red-500 text-white px-2 py-1 rounded cursor-pointer"
+                    className="bg-red-500 text-white px-2 py-1 rounded"
                   >
                     Remove
                   </button>
@@ -205,7 +244,6 @@ const handleSubmit = async (e) => {
         </table>
       )}
 
-      {/* SUBMIT BUTTON */}
       {selectData.length > 0 && (
         <button
           onClick={handleSubmit}
