@@ -5,13 +5,13 @@ import api from '../../../services/api'
 export default function Print() {
   const { fabric } = useContext(DataContext);
 
-  const [dcno, setDecNo] = useState({ DOC_NO: "" });
+  const [order_no, setOrder_no] = useState({ ORDER_NO: "" });
   const [userData, setUserData] = useState([]);
 
   const fabricList = async () => {
     try {
       const response = await api.post('/inventory/print/1', {
-        DOC_NO: dcno.DOC_NO
+        ORDER_NO: order_no.ORDER_NO
       });
 
       setUserData(response.data);
@@ -24,7 +24,7 @@ export default function Print() {
    const cutting = async () => {
     try {
       const response = await api.post('/inventory/print/2', {
-        DOC_NO: dcno.DOC_NO
+        ORDER_NO: order_no.ORDER_NO
       });
 
       setUserData(response.data);
@@ -38,14 +38,14 @@ export default function Print() {
   return (
     <div className='flex flex-col items-center'>
       <div className='flex justify-center py-4'>
-        <label>Enter Dc No : </label>
+        <label>Enter ORDER_NO : </label>
 
         <input
           type="text"
           className='outline-none'
-          value={dcno.DOC_NO}
+          value={order_no.ORDER_NO}
           onChange={(e) =>
-            setDecNo({ ...dcno, DOC_NO: e.target.value })
+            setOrder_no({ ...order_no, ORDER_NO: e.target.value })
           }
         />
 

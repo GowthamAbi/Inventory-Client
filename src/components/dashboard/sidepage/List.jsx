@@ -95,7 +95,7 @@ const [cuttingList,setCuttingList]=useState([])
                 <td className="border ">{item.SET_NO}</td>
                 <td className="border ">{item.ITEM_NAME}</td>
                 <td className="border ">{item.STYLE}</td>
-                <td className="border ">{item.SIZE.first_size}</td>
+                
                 <td className="border ">{item.ROLL}</td>
                 <td className="border ">{item.WGT}</td>
               </tr>
