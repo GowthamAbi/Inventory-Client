@@ -7,7 +7,7 @@ export default function Outward() {
 
   const [userData, setUserData] = useState([]);
 
-const[size,setSize]=useState([])
+const[sizeClick,setSizeClick]=useState(false)
 
   if (!selectData) return <h3>No data received</h3>;
 
@@ -31,11 +31,68 @@ const[size,setSize]=useState([])
         ITEM_CODE: "",
         ITEM_NAME: "",
         STYLE: "",
-        SIZE: {
-                first_size: "",
-                first_size_pcs_wt: "",
-                first_size_fab_wt: ""
-              },
+        SIZE: [
+  {
+    first_size: "",
+    first_size_pcs_wt: "",
+    first_size_fab_wt: ""
+  },
+  {
+    second_size: "",
+    second_size_pcs_wt: "",
+    second_size_fab_wt: ""
+  },
+  {
+    third_size: "",
+    third_size_pcs_wt: "",
+    third_size_fab_wt: ""
+  },
+  {
+    fourth_size: "",
+    fourth_size_pcs_wt: "",
+    fourth_size_fab_wt: ""
+  },
+  {
+    fifth_size: "",
+    fifth_size_pcs_wt: "",
+    fifth_size_fab_wt: ""
+  },
+  {
+    sixth_size: "",
+    sixth_size_pcs_wt: "",
+    sixth_size_fab_wt: ""
+  },
+  {
+    seventh_size: "",
+    seventh_size_pcs_wt: "",
+    seventh_size_fab_wt: ""
+  },
+  {
+    eighth_size: "",
+    eighth_size_pcs_wt: "",
+    eighth_size_fab_wt: ""
+  },
+  {
+    ninth_size: "",
+    ninth_size_pcs_wt: "",
+    ninth_size_fab_wt: ""
+  },
+  {
+    tenth_size: "",
+    tenth_size_pcs_wt: "",
+    tenth_size_fab_wt: ""
+  },
+  {
+    eleventh_size: "",
+    eleventh_size_pcs_wt: "",
+    eleventh_size_fab_wt: ""
+  },
+  {
+    twelfth_size: "",
+    twelfth_size_pcs_wt: "",
+    twelfth_size_fab_wt: ""
+  }
+],
         PCS_WEIGHT: "",
         WEIGHT: "",
       }));
@@ -100,8 +157,15 @@ const[size,setSize]=useState([])
     }
   };
 
+const sizeKeys = [
+  "first", "second", "third", "fourth", "fifth", "sixth",
+  "seventh", "eighth", "ninth", "tenth", "eleventh", "twelfth"
+];
+
+
+
   return (
-    <div className="overflow-x-auto uppercase p-4 flex flex-col items-center justify-center">
+    <div className="overflow-x-auto uppercase p-4 flex flex-col items-center justify-center realtive">
 
       {selectData.length > 0 && (
         <table className="min-w-full border">
@@ -192,43 +256,15 @@ const[size,setSize]=useState([])
                 </td>
 
                 {/* SIZE + POPUP */}
-                <td className="border relative">
+      <td className="border relative">
 
-  {/* SIZE main field */}
-  <input
-    value={userData[index]?.SIZE.first_size || ""}
-    onChange={(e) =>
-      handleSizeChange(index, "first_size", e.target.value)
-    }
-    className="outline-none w-full px-1"
-  />
+            {/* SIZE main field */}
+      <button onClick={()=>setSizeClick(!sizeClick)} className="cursor-pointer relative w-full">Click Here</button>
+      </td>
 
-  {/* POPUP BOX */}
-  <div className="absolute left-0 top-full bg-white border p-1 shadow-md w-44 z-10">
-    <label className="text-xs">75</label>
+      
 
-    <input
-      placeholder="pcs weight"
-      value={userData[index]?.SIZE.first_size_pcs_wt || ""}
-      onChange={(e) =>
-        handleSizeChange(index, "first_size_pcs_wt", e.target.value)
-      }
-      className="border w-full px-1 text-xs my-1"
-    />
-
-    <input
-      placeholder="fabric weight"
-      value={userData[index]?.SIZE.first_size_fab_wt || ""}
-      onChange={(e) =>
-        handleSizeChange(index, "first_size_fab_wt", e.target.value)
-      }
-      className="border w-full px-1 text-xs"
-    />
-  </div>
-
-</td>
-
-
+        
                 {/* Remove button */}
                 <td className="border px-4 py-2 text-center">
                   <button
@@ -252,6 +288,72 @@ const[size,setSize]=useState([])
           Submit
         </button>
       )}
+
+      {sizeClick && (
+        <div className="absolute overflow-y-auto top-ful bg-gray-200 border p-1 shadow-md text-xl  ">
+            
+          {userData.map((row,index)=>(
+            <div className=" px-2 flex flex-col justify-center py-2"  key={`${row.DOC_NO}_${index}`}>
+            <table className="w-full border text-center text-xl">
+              <thead>
+                <tr className="bg-gray-300">
+                  <th className="border px-2 py-1">S.No</th>
+                  <th className="border px-2 py-1">Size</th>
+                  <th className="border px-2 py-1">PCS Weight</th>
+                  <th className="border px-2 py-1">Fabric Weight</th>
+                </tr>
+              </thead>
+
+              <tbody className="">
+                {sizeKeys.map((label, i) => (
+                  <tr key={i} className="border ">
+                    <td className="border px-2 py-1">{i + 1}</td>
+
+                    <td className="border px-2 py-1 ">
+                      <input
+                      
+                        value={userData[index]?.SIZE[`${label}_size`] || ""}
+                        onChange={(e) =>
+                          handleSizeChange(index, `${label}_size`, e.target.value)
+                        }
+                        className="outline-none w-full px-1"
+                      />
+                    </td>
+
+                    <td className="border px-2 py-1">
+                      <input
+                      
+                        value={userData[index]?.SIZE[`${label}_size_pcs_wt`] || ""}
+                        onChange={(e) =>
+                          handleSizeChange(index, `${label}_size_pcs_wt`, e.target.value)
+                        }
+                        className="outline-none w-full px-1"
+                      />
+                    </td>
+
+                    <td className="border px-2 py-1">
+                      <input
+                        
+                        value={userData[index]?.SIZE[`${label}_size_fab_wt`] || ""}
+                        onChange={(e) =>
+                          handleSizeChange(index, `${label}_size_fab_wt`, e.target.value)
+                        }
+                        className="outline-none w-full px-1"
+                      />
+                    </td>
+                  </tr>
+                ))}
+                
+              </tbody>
+            </table>
+          <div className="flex justify-center gap-4">
+            <button className=" bg-blue-400 px-4 py-2 rounded-xl my-2 cursor-pointer hover:bg-blue-800 ">Submit</button>
+          <button onClick={()=>setSizeClick(!sizeClick)} className=" bg-red-400 px-4 py-2 rounded-xl my-2 cursor-pointer hover:bg-red-800">Cencel</button>
+          </div>
+            </div>
+          ))}
+          </div>
+        )}
     </div>
   );
 }
