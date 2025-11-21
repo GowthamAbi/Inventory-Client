@@ -52,7 +52,7 @@ export default function Print() {
   // Download PDF
   const handleDownload = () => {
     const element = document.getElementById("print-area");
-    html2pdf().from(element).save("print.pdf");
+    html2pdf().from(element).save(`${order_no.ORDER_NO}`);
   };
 
   return (
@@ -92,7 +92,7 @@ export default function Print() {
       )}
 
       {/* ============ PRINT AREA =============== */}
-      <div id="print-area" className="w-full max-w-4xl print:p-0">
+      <div id="print-area" className="w-full max-w-4xl print:p-0 print-no-colors">
 
 
         {/* ===================== FABRIC PRINT ===================== */}
@@ -164,98 +164,109 @@ export default function Print() {
 
         {/* ===================== CUTTING PRINT ===================== */}
         {fabric !== "fabric" && userData.length > 0 && (
+  <div className="grid grid-cols-6 border border-black uppercase text-center">
 
-          <div className="grid grid-cols-6 border border-black uppercase text-center">
+    {/* TITLE */}
+    <h1 className="col-span-6 border text-2xl font-bold py-1">R AND R TEXTILE</h1>
+    <h1 className="col-span-6 border text-2xl font-bold py-1">RRP3 LAY CUTTING</h1>
 
-            <h1 className="col-span-6 border text-2xl">R AND R TEXTILE</h1>
-            <h1 className="col-span-6 border text-2xl">RRP3 LAY CUTTING</h1>
+    {/* LEFT LABELS */}
+    <div className="col-span-1 grid grid-rows-6 font-semibold">
+      <div className="border p-1">lot gsm</div>
+      <div className="border p-1">r gsm</div>
+      <div className="border p-1">dc no</div>
+      <div className="border p-1">set no</div>
+      <div className="border p-1">item</div>
+      <div className="border p-1">size</div>
+    </div>
 
-            {/* LEFT LABELS */}
-            <div className="col-span-1 grid grid-rows-6">
-              <div className="border">lot gsm</div>
-              <div className="border">r gsm</div>
-              <div className="border">dc no</div>
-              <div className="border">set no</div>
-              <div className="border">item</div>
-              <div className="border">size</div>
-            </div>
+    {/* LEFT VALUES */}
+    <div className="col-span-2 grid grid-rows-6">
+      <input className="border p-1 print:border-none" />
+      <input className="border p-1 print:border-none" />
+      <input className="border p-1 print:border-none" />
 
-            {/* LEFT VALUES */}
-            <div className="col-span-2 grid grid-rows-6">
-              <input className="border print:border-none" />
-              <input className="border print:border-none" />
-              <input className="border print:border-none" />
+      <div className="border p-1">{userData[0].SET_NO}</div>
+      <div className="border p-1">{safeDisplay(userData[0].ITEM_NAME)}</div>
 
-              <div className="border">{userData[0].SET_NO}</div>
-              <div className="border">{safeDisplay(userData[0].ITEM_NAME)}</div>
-
-              {/* FIX FOR SIZE → Safely join values */}
-              <div className="border">
-                {safeDisplay(userData[0].SIZE)}
-              </div>
-            </div>
-
-            {/* RIGHT LABELS */}
-            <div className="col-span-1 grid grid-rows-6">
-              <div className="border">T Dia</div>
-              <div className="border">j or no</div>
-              <div className="border">c p no</div>
-              <div className="border">pcs</div>
-              <div className="border">date</div>
-              <div className="border">dia</div>
-            </div>
-
-            {/* RIGHT INPUTS */}
-            <div className="col-span-2 grid grid-rows-6">
-              <input className="border print:border-none" />
-              <input className="border print:border-none" />
-              <input className="border print:border-none" />
-              <input className="border print:border-none" />
-              <input className="border print:border-none" />
-              <input className="border print:border-none" />
-            </div>
-
-            {/* QUALITY */}
-            <div className="col-span-6 grid grid-cols-6 mt-2">
-              <div className="border">quality</div>
-              <input className="border col-span-5 print:border-none" />
-            </div>
-
-            {/* CUTTING TABLE */}
-            <div className="col-span-6 mt-2">
-              <table className="w-full border text-center">
-                <thead>
-                  <tr>
-                    <th className="border p-2">s no</th>
-                    <th className="border p-2">batch no</th>
-                    <th className="border p-2">colour</th>
-                    <th className="border p-2">roll</th>
-                    <th className="border p-2">weight</th>
-                    <th className="border p-2">remarks</th>
-                  </tr>
-                </thead>
-
-                <tbody>
-                  {labels.map((label, index) => (
-                    <tr key={label}>
-                      <td className="border p-1">{index + 1}</td>
-                      <td className="border p-1">{userData[0].DOC_NO?.[`${label}_dcno`] || ""}</td>
-                      <td className="border p-1">{userData[0].COLOR_NAME?.[`${label}_color`] || ""}</td>
-                      <td className="border p-1">{userData[0].ROLL?.[`${label}_roll`] || ""}</td>
-                      <td className="border p-1">{userData[0].WGT?.[`${label}_wgt`] || ""}</td>
-
-                      <td className="border p-1">
-                        <input className="w-full outline-none text-center print:border-none" />
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-
-              </table>
-            </div>
-
-          </div>
+      {/* SIZE DISPLAY */}
+      <div className="border p-1 flex flex-wrap gap-1 justify-center">
+        {userData.map((item) =>
+          labels.map((label) => {
+            const sizeValue = item.SIZE?.[`${label}_size`];
+            if (!sizeValue || sizeValue <= 0) return null;
+            return (
+              <span key={label} className="px-1">
+                {sizeValue},
+              </span>
+            );
+          })
         )}
+      </div>
+    </div>
+
+    {/* RIGHT LABELS */}
+    <div className="col-span-1 grid grid-rows-6 font-semibold">
+      <div className="border p-1">T Dia</div>
+      <div className="border p-1">j or no</div>
+      <div className="border p-1">c p no</div>
+      <div className="border p-1">pcs</div>
+      <div className="border p-1">date</div>
+      <div className="border p-1">dia</div>
+    </div>
+
+    {/* RIGHT INPUTS */}
+    <div className="col-span-2 grid grid-rows-6">
+      <input className="border p-1 print:border-none" />
+      <input className="border p-1 print:border-none" />
+      <input className="border p-1 print:border-none" />
+      <input className="border p-1 print:border-none" />
+      <input className="border p-1 print:border-none" />
+      <input className="border p-1 print:border-none" />
+    </div>
+
+    {/* QUALITY */}
+    <div className="col-span-6 grid grid-cols-6 mt-2">
+      <div className="border p-1 font-semibold">quality</div>
+      <input className="border col-span-5 p-1 print:border-none" />
+    </div>
+
+    {/* CUTTING TABLE */}
+    <div className="col-span-6 mt-2">
+      <table className="w-full border text-center">
+        <thead className="bg-gray-100 font-semibold">
+          <tr>
+            <th className="border p-2">s no</th>
+            <th className="border p-2">batch no</th>
+            <th className="border p-2">colour</th>
+            <th className="border p-2">roll</th>
+            <th className="border p-2">weight</th>
+            <th className="border p-2">remarks</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {labels.map((label, index) =>
+            userData.length>=index &&  (
+              <tr key={label}>
+                <td className="border p-1">{index + 1}</td>
+                <td className="border p-1">{userData[0].DOC_NO?.[`${label}_dcno`] || ""}</td>
+                <td className="border p-1">{userData[0].COLOR_NAME?.[`${label}_color`] || ""}</td>
+                <td className="border p-1">{userData[0].ROLL?.[`${label}_roll`] || ""}</td>
+                <td className="border p-1">{userData[0].WGT?.[`${label}_wgt`] || ""}</td>
+                <td className="border p-1">
+                 
+                </td>
+              </tr>
+            ) 
+          )}
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+)}
+
 
       </div>
     </div>

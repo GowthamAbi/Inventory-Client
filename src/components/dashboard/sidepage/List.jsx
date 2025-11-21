@@ -181,6 +181,7 @@ export default function List() {
                 <th className="border p-2">Style</th>
                 <th className="border p-2">Roll</th>
                 <th className="border p-2">Weight</th>
+                <th className="border p-2">PCS</th>
               </tr>
             </thead>
 
@@ -197,6 +198,7 @@ export default function List() {
                   <td className="border p-1">{item.STYLE}</td>
                   <td className="border p-1">{formatValue(item.ROLL)}</td>
                   <td className="border p-1">{formatValue(item.WGT)}</td>
+                  <td className="border p-1">{formatValue(item.PCS)}</td>
                 </tr>
               ))}
             </tbody>

@@ -1,0 +1,58 @@
+.print-no-colors * {
+  color: #000 !important;                    /* Clean black text */
+  background-color: #fff !important;         /* Pure white background */
+  border-color: #000 !important;             /* Sharp black border */
+  text-shadow: none !important;              /* Remove Tailwind effects */
+  box-shadow: none !important;               /* Remove shadows */
+  filter: none !important;                   /* Avoid weird effects */
+ 
+  font-family: "Arial", sans-serif !important;
+  font-size: 14px !important;
+}
+
+.print-no-colors input,
+.print-no-colors textarea {
+  color: #000 !important;
+  background-color: #fff !important;
+  border: 1px solid #000 !important;
+}
+
+:root {
+  --tw-text-opacity: 1 !important;
+  --tw-bg-opacity: 1 !important;
+  --tw-border-opacity: 1 !important;
+}
+ .print-no-colors {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity)) !important;
+
+  --tw-text-opacity: 1;
+  color: rgb(0 0 0 / var(--tw-text-opacity)) !important;
+
+  --tw-border-opacity: 1;
+  border-color: rgb(0 0 0 / var(--tw-border-opacity)) !important;
+}
+@layer utilities {
+  @media print {
+    .print-only { display: block !important; }
+    .no-print { display: none !important; }
+  }
+}
+
+@media print {
+  body * {
+    visibility: hidden !important;
+  }
+
+  #print-area,
+  #print-area * {
+    visibility: visible !important;
+  }
+
+  #print-area {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100% !important;
+  }
+}

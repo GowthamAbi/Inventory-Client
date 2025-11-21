@@ -75,54 +75,67 @@ export default function Outward() {
 
       // SIZE from first row (if available)
       SIZE: {
-        first_size: base.SIZE?.first_size || "",
-        first_size_pcs_wt: base.SIZE?.first_size_pcs_wt || "",
-        first_size_fab_wt: base.SIZE?.first_size_fab_wt || "",
+  first_size: base.SIZE?.first_size || "",
+  first_size_pcs_wt: base.SIZE?.first_size_pcs_wt || "",
+  first_size_fab_wt: base.SIZE?.first_size_fab_wt || "",
+  first_size_pcs: base.SIZE?.first_size_pcs || "",
 
-        second_size: base.SIZE?.second_size || "",
-        second_size_pcs_wt: base.SIZE?.second_size_pcs_wt || "",
-        second_size_fab_wt: base.SIZE?.second_size_fab_wt || "",
+  second_size: base.SIZE?.second_size || "",
+  second_size_pcs_wt: base.SIZE?.second_size_pcs_wt || "",
+  second_size_fab_wt: base.SIZE?.second_size_fab_wt || "",
+  second_size_pcs: base.SIZE?.second_size_pcs || "",
 
-        third_size: base.SIZE?.third_size || "",
-        third_size_pcs_wt: base.SIZE?.third_size_pcs_wt || "",
-        third_size_fab_wt: base.SIZE?.third_size_fab_wt || "",
+  third_size: base.SIZE?.third_size || "",
+  third_size_pcs_wt: base.SIZE?.third_size_pcs_wt || "",
+  third_size_fab_wt: base.SIZE?.third_size_fab_wt || "",
+  third_size_pcs: base.SIZE?.third_size_pcs || "",
 
-        fourth_size: base.SIZE?.fourth_size || "",
-        fourth_size_pcs_wt: base.SIZE?.fourth_size_pcs_wt || "",
-        fourth_size_fab_wt: base.SIZE?.fourth_size_fab_wt || "",
+  fourth_size: base.SIZE?.fourth_size || "",
+  fourth_size_pcs_wt: base.SIZE?.fourth_size_pcs_wt || "",
+  fourth_size_fab_wt: base.SIZE?.fourth_size_fab_wt || "",
+  fourth_size_pcs: base.SIZE?.fourth_size_pcs || "",
 
-        fifth_size: base.SIZE?.fifth_size || "",
-        fifth_size_pcs_wt: base.SIZE?.fifth_size_pcs_wt || "",
-        fifth_size_fab_wt: base.SIZE?.fifth_size_fab_wt || "",
+  fifth_size: base.SIZE?.fifth_size || "",
+  fifth_size_pcs_wt: base.SIZE?.fifth_size_pcs_wt || "",
+  fifth_size_fab_wt: base.SIZE?.fifth_size_fab_wt || "",
+  fifth_size_pcs: base.SIZE?.fifth_size_pcs || "",
 
-        sixth_size: base.SIZE?.sixth_size || "",
-        sixth_size_pcs_wt: base.SIZE?.sixth_size_pcs_wt || "",
-        sixth_size_fab_wt: base.SIZE?.sixth_size_fab_wt || "",
+  sixth_size: base.SIZE?.sixth_size || "",
+  sixth_size_pcs_wt: base.SIZE?.sixth_size_pcs_wt || "",
+  sixth_size_fab_wt: base.SIZE?.sixth_size_fab_wt || "",
+  sixth_size_pcs: base.SIZE?.sixth_size_pcs || "",
 
-        seventh_size: base.SIZE?.seventh_size || "",
-        seventh_size_pcs_wt: base.SIZE?.seventh_size_pcs_wt || "",
-        seventh_size_fab_wt: base.SIZE?.seventh_size_fab_wt || "",
+  seventh_size: base.SIZE?.seventh_size || "",
+  seventh_size_pcs_wt: base.SIZE?.seventh_size_pcs_wt || "",
+  seventh_size_fab_wt: base.SIZE?.seventh_size_fab_wt || "",
+  seventh_size_pcs: base.SIZE?.seventh_size_pcs || "",
 
-        eighth_size: base.SIZE?.eighth_size || "",
-        eighth_size_pcs_wt: base.SIZE?.eighth_size_pcs_wt || "",
-        eighth_size_fab_wt: base.SIZE?.eighth_size_fab_wt || "",
+  eighth_size: base.SIZE?.eighth_size || "",
+  eighth_size_pcs_wt: base.SIZE?.eighth_size_pcs_wt || "",
+  eighth_size_fab_wt: base.SIZE?.eighth_size_fab_wt || "",
+  eighth_size_pcs: base.SIZE?.eighth_size_pcs || "",
 
-        ninth_size: base.SIZE?.ninth_size || "",
-        ninth_size_pcs_wt: base.SIZE?.ninth_size_pcs_wt || "",
-        ninth_size_fab_wt: base.SIZE?.ninth_size_fab_wt || "",
+  ninth_size: base.SIZE?.ninth_size || "",
+  ninth_size_pcs_wt: base.SIZE?.ninth_size_pcs_wt || "",
+  ninth_size_fab_wt: base.SIZE?.ninth_size_fab_wt || "",
+  ninth_size_pcs: base.SIZE?.ninth_size_pcs || "",
 
-        tenth_size: base.SIZE?.tenth_size || "",
-        tenth_size_pcs_wt: base.SIZE?.tenth_size_pcs_wt || "",
-        tenth_size_fab_wt: base.SIZE?.tenth_size_fab_wt || "",
+  tenth_size: base.SIZE?.tenth_size || "",
+  tenth_size_pcs_wt: base.SIZE?.tenth_size_pcs_wt || "",
+  tenth_size_fab_wt: base.SIZE?.tenth_size_fab_wt || "",
+  tenth_size_pcs: base.SIZE?.tenth_size_pcs || "",
 
-        eleventh_size: base.SIZE?.eleventh_size || "",
-        eleventh_size_pcs_wt: base.SIZE?.eleventh_size_pcs_wt || "",
-        eleventh_size_fab_wt: base.SIZE?.eleventh_size_fab_wt || "",
+  eleventh_size: base.SIZE?.eleventh_size || "",
+  eleventh_size_pcs_wt: base.SIZE?.eleventh_size_pcs_wt || "",
+  eleventh_size_fab_wt: base.SIZE?.eleventh_size_fab_wt || "",
+  eleventh_size_pcs: base.SIZE?.eleventh_size_pcs || "",
 
-        twelfth_size: base.SIZE?.twelfth_size || "",
-        twelfth_size_pcs_wt: base.SIZE?.twelfth_size_pcs_wt || "",
-        twelfth_size_fab_wt: base.SIZE?.twelfth_size_fab_wt || ""
-      }
+  twelfth_size: base.SIZE?.twelfth_size || "",
+  twelfth_size_pcs_wt: base.SIZE?.twelfth_size_pcs_wt || "",
+  twelfth_size_fab_wt: base.SIZE?.twelfth_size_fab_wt || "",
+  twelfth_size_pcs: base.SIZE?.twelfth_size_pcs || ""
+}
+
     };
 
     // If you still want to merge DOC_NO/COLOR/ROLL/WGT from multiple rows:
@@ -375,52 +388,88 @@ export default function Outward() {
                   <th className="border px-2 py-1">Size</th>
                   <th className="border px-2 py-1">PCS Wgt</th>
                   <th className="border px-2 py-1">Fab Wgt</th>
+                  <th className="border px-2 py-1">pcs</th>
                 </tr>
               </thead>
 
               <tbody>
-                {sizeKeys.map((label, i) => {
-                  const sizeKey = `${label}_size`;
-                  const pcsKey = `${label}_size_pcs_wt`;
-                  const fabKey = `${label}_size_fab_wt`;
-                  const row = mainRow;
+            {sizeKeys.map((label, i) => {
+  const sizeKey = `${label}_size`;
+  const pcswtKey = `${label}_size_pcs_wt`;
+  const fabKey = `${label}_size_fab_wt`;
+  const pcsKey = `${label}_size_pcs`;
 
-                  return (
-                    <tr key={label}>
-                      <td className="border px-2 py-1">{i + 1}</td>
+  const row = mainRow;
 
-                      <td className="border px-2 py-1">
-                        <input
-                          className="outline-none w-full px-1"
-                          value={row.SIZE?.[sizeKey] || ""}
-                          onChange={(e) =>
-                            handleNestedChange("SIZE", sizeKey, e.target.value)
-                          }
-                        />
-                      </td>
+  const pcswt = Number(row.SIZE?.[pcswtKey] || 0);
+  const fab = Number(row.SIZE?.[fabKey] || 0);
 
-                      <td className="border px-2 py-1">
-                        <input
-                          className="outline-none w-full px-1"
-                          value={row.SIZE?.[pcsKey] || ""}
-                          onChange={(e) =>
-                            handleNestedChange("SIZE", pcsKey, e.target.value)
-                          }
-                        />
-                      </td>
+  return (
+    <tr key={label}>
+      <td className="border px-2 py-1">{i + 1}</td>
 
-                      <td className="border px-2 py-1">
-                        <input
-                          className="outline-none w-full px-1"
-                          value={row.SIZE?.[fabKey] || ""}
-                          onChange={(e) =>
-                            handleNestedChange("SIZE", fabKey, e.target.value)
-                          }
-                        />
-                      </td>
-                    </tr>
-                  );
-                })}
+      {/* SIZE */}
+      <td className="border px-2 py-1">
+        <input
+          value={row.SIZE?.[sizeKey] || ""}
+          onChange={(e) =>
+            handleNestedChange("SIZE", sizeKey, e.target.value)
+          }
+        />
+      </td>
+
+      {/* PCS WT */}
+      <td className="border px-2 py-1">
+        <input
+          value={row.SIZE?.[pcswtKey] || ""}
+          onChange={(e) => {
+            const val = e.target.value;
+
+            // save pcswt
+            handleNestedChange("SIZE", pcswtKey, val);
+
+            // calculate PCS and save
+            const pcsValue = Number(val) > 0
+              ? Math.round(Number(row.SIZE[fabKey] || 0) / Number(val))
+              : 0;
+
+            handleNestedChange("SIZE", pcsKey, pcsValue);
+          }}
+        />
+      </td>
+
+      {/* FAB WT */}
+      <td className="border px-2 py-1">
+        <input
+          value={row.SIZE?.[fabKey] || ""}
+          onChange={(e) => {
+            const val = e.target.value;
+
+            // save fab wt
+            handleNestedChange("SIZE", fabKey, val);
+
+            // calculate PCS and save
+            const pcsValue = Number(row.SIZE[pcswtKey] || 0) > 0
+              ? Math.round(Number(val) / Number(row.SIZE[pcswtKey]))
+              : 0;
+
+            handleNestedChange("SIZE", pcsKey, pcsValue);
+          }}
+        />
+      </td>
+
+      {/* PCS (saved value) */}
+      <td className="border px-2 py-1">
+        <input
+          className="bg-gray-100"
+          value={row.SIZE?.[pcsKey] || ""}
+          readOnly
+        />
+      </td>
+    </tr>
+  );
+})}
+
               </tbody>
             </table>
 
