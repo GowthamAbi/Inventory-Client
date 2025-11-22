@@ -2,8 +2,13 @@ import React, { useState } from "react";
 import api from "../../../services/api";
 
 export default function Inward() {
-  const [userData, setUserData] = useState({});
+  // 10 rows
+  const [userData, setUserData] = useState(
+    Array.from({ length: 10 }, () => ({}))
+  );
+
   const [popup, setPopup] = useState(false);
+  const [num, setNum] = useState(0);
 
   const title = [
     "PRCESS_NAME",
@@ -15,7 +20,7 @@ export default function Inward() {
     "SET_NO",
     "RECORD_TYPE",
     "JOB_ORDER_NO",
-    "DC_DIA", // index 9 (we are handling this separately as 10.DC_DIA)
+    "DC_DIA",
     "S.NO",
     "DIA_TYPE",
     "D_DIA",
@@ -33,310 +38,221 @@ export default function Inward() {
     "SAM_WGT3",
   ];
 
-  // This describes all the DC_DIA related fields that will be generated
-const diaSets = Array.from({ length: 10 }, (_, i) => ({
-  // Base Fields
-  dia_type: `dia_type_${i + 1}`,
+  // Dynamic field names for 10 rows
+  const diaSets = Array.from({ length: 10 }, (_, i) => ({
+    dia_type: `dia_type_${i + 1}`,
+    d_dia: `d_dia_${i + 1}`,
+    d_roll: `d_roll_${i + 1}`,
+    d_wgt: `d_wgt_${i + 1}`,
+    r_dia: `r_dia_${i + 1}`,
+    r_roll: `r_roll_${i + 1}`,
+    r_wgt: `r_wgt_${i + 1}`,
+    df_wgt: `df_wgt_${i + 1}`,
+    d_prec: `d_prec_${i + 1}`,
+    s_roll: `s_roll_${i + 1}`,
+    s_wgt: `s_wgt_${i + 1}`,
+    s_roll2: `s_roll2_${i + 1}`,
+    s_wgt2: `s_wgt2_${i + 1}`,
+    s_roll3: `s_roll3_${i + 1}`,
+    s_wgt3: `s_wgt3_${i + 1}`,
+    s_roll4: `s_roll4_${i + 1}`,
+    s_wgt4: `s_wgt4_${i + 1}`,
+  }));
 
-  d_dia: `d_dia_${i + 1}`,
-  d_roll: `d_roll_${i + 1}`,
-  d_wgt: `d_wgt_${i + 1}`,
+  // Proper handleChange with auto-calculation
+  const handleChange = (index, key, value) => {
+    setUserData((prev) => {
+      const updated = [...prev];
+      const row = { ...updated[index], [key]: value };
 
-  r_dia: `r_dia_${i + 1}`,
-  r_roll: `r_roll_${i + 1}`,
-  r_wgt: `r_wgt_${i + 1}`,
+      const s = diaSets[index];
 
-  df_wgt: `df_wgt_${i + 1}`,
-  d_prec: `d_prec_${i + 1}`,
+      const d = Number(row[s.d_wgt]);
+      const r = Number(row[s.r_wgt]);
 
-  // Sample Roll 1
-  s_roll: `s_roll_${i + 1}`,
-  s_wgt: `s_wgt_${i + 1}`,
+      if (Number.isFinite(d) && Number.isFinite(r)) {
+        row[s.df_wgt] = d - r;
+        row[s.d_prec] = d !== 0 ? (((d - r) / d) * 100).toFixed(2) : "";
+      }
 
-  // Sample Roll 2
-  s_roll2: `s_roll2_${i + 1}`,
-  s_wgt2: `s_wgt2_${i + 1}`,
-
-  // Sample Roll 3
-  s_roll3: `s_roll3_${i + 1}`,
-  s_wgt3: `s_wgt3_${i + 1}`,
-
-  // Sample Roll 4 (optional extra to make 18 fields)
-  s_roll4: `s_roll4_${i + 1}`,
-  s_wgt4: `s_wgt4_${i + 1}`,
-}));
-
-  const handleChange = (key, value) => {
-    setUserData((prev) => ({
-      ...prev,
-      [key]: value,
-    }));
+      updated[index] = row;
+      return updated;
+    });
   };
 
+  // Submit data
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const dc_dia = diaSets.map((set) => ({
-      dia_type: userData[set.dia_type] || "",
-      d_dia: userData[set.d_dia] || "",
-      d_roll: userData[set.d_roll] || "",
-      d_wgt: userData[set.d_wgt] || "",
-      r_dia: userData[set.r_dia] || "",
-      r_roll: userData[set.r_roll] || "",
-      r_wgt: userData[set.r_wgt] || "",
-      df_wgt: userData[set.df_wgt] || "",
-      d_prec: userData[set.d_prec] || "",
-      s_roll: userData[set.s_roll] || "",
-      s_wgt: userData[set.s_wgt] || "",
-      s_roll2: userData[set.s_roll2] || "",
-      s_wgt2: userData[set.s_wgt2] || "",
-      s_roll3: userData[set.s_roll3] || "",
-      s_wgt3: userData[set.s_wgt3] || "",
-      s_roll4: userData[set.s_roll4] || "",
-      s_wgt4: userData[set.s_wgt4] || "",
-    }));
 
-    const finalData = {
-      ...userData,
+    const dc_dia = userData.map((row, i) => {
+      const f = diaSets[i];
+      return {
+        dia_type: row[f.dia_type] || null,
+        d_dia: row[f.d_dia] || null,
+        d_roll: row[f.d_roll] || null,
+        d_wgt: row[f.d_wgt] || null,
+        r_dia: row[f.r_dia] || null,
+        r_roll: row[f.r_roll] || null,
+        r_wgt: row[f.r_wgt] || null,
+        df_wgt: row[f.df_wgt] || null,
+        d_prec: row[f.d_prec] || null,
+        s_roll: row[f.s_roll] || null,
+        s_wgt: row[f.s_wgt] || null,
+        s_roll2: row[f.s_roll2] || null,
+        s_wgt2: row[f.s_wgt2] || null,
+        s_roll3: row[f.s_roll3] || null,
+        s_wgt3: row[f.s_wgt3] || null,
+        s_roll4: row[f.s_roll4] || null,
+        s_wgt4: row[f.s_wgt4] || null,
+      };
+    });
+
+    const sendable = {
+      ...Object.fromEntries(
+        Object.entries(userData[0] || {}).filter(([_, v]) => v !== "")
+      ),
       dc_dia,
     };
 
-      const { data } = await api.post("/inventory/inward", finalData);
-      alert("Data is Saved")
-      setUserData({});
+    try {
+      await api.post("/inventory/inward", sendable);
+      alert("Saved Successfully!");
+
+      setUserData(Array.from({ length: 10 }, () => ({})));
       setPopup(false);
+      setNum(0);
     } catch (error) {
-      console.log("Inventory error", error);
+      console.log("Error:", error);
     }
   };
 
   return (
     <section className="p-4 w-full">
-      <div>
-        <form className="mx-auto max-w-4xl" onSubmit={handleSubmit}>
-          {/* First 9 labels (1–9) */}
-          <div>
-            {title.map(
-              (item, index) =>
-                index < 9 && (
-                  <div
-                    className="flex border-b border-gray-300 px-2 py-4 gap-4 justify-between items-center"
-                    key={index}
-                  >
-                    <h1 className="w-1/4 text-gray-400">
-                      {index + 1}. {item}
-                    </h1>
-                    <input
-                      className="w-3/4 outline-none border rounded px-2 py-1"
-                      value={userData[item] || ""}
-                      name={item}
-                      onChange={(e) => handleChange(item, e.target.value)}
-                    />
-                  </div>
-                )
-            )}
-          </div>
+      <form className="mx-auto max-w-4xl" onSubmit={handleSubmit}>
+        
+        {/* FIRST 9 FIELDS */}
+        {title.map(
+          (item, index) =>
+            index < 9 && (
+              <div
+                key={index}
+                className="flex justify-between items-center border-b py-3"
+              >
+                <label className="w-1/3 text-gray-500">
+                  {index + 1}. {item}
+                </label>
+                <input
+                  className="border rounded p-2 w-2/3"
+                  value={userData[0][item] || ""}
+                  onChange={(e) => handleChange(0, item, e.target.value)}
+                />
+              </div>
+            )
+        )}
 
-          {/* 10. DC_DIA Popup trigger */}
-          <div className="flex border-b border-gray-300 px-2 py-4 gap-4 items-center">
-            <h1 className="w-1/4 text-gray-400">10. DC_DIA</h1>
-            <button
-              type="button"
-              className="bg-amber-400 px-4 py-2 rounded-2xl cursor-pointer hover:bg-amber-800 text-white"
-              onClick={(e) => {
-                e.preventDefault();
-                setPopup(true);
-              }}
-            >
-              CLICK HERE
-            </button>
-          </div>
+        {/* NO OF ROWS */}
+        <div className="flex items-center border-b py-3">
+          <label className="w-1/3 text-gray-500">10. NO OF DIA</label>
+          <input
+            type="number"
+            className="border rounded p-2 w-20 text-center"
+            value={num}
+            onChange={(e) => setNum(Number(e.target.value))}
+          />
 
           <button
-            type="submit"
-            className="mt-4 text-center border-2 bg-blue-500 text-white text-xl hover:bg-blue-800 cursor-pointer p-2 rounded-xl w-full"
+            type="button"
+            className="ml-4 bg-amber-500 text-white px-4 py-2 rounded"
+            onClick={() => setPopup(true)}
           >
-            SUBMIT
+            CLICK HERE
           </button>
-        </form>
-      </div>
+        </div>
+
+        <button className="w-full mt-4 bg-blue-500 text-white p-3 rounded-lg">
+          SUBMIT
+        </button>
+      </form>
 
       {/* POPUP */}
-          {popup && (
-  <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-    <div className="bg-white p-5 rounded-xl shadow-2xl w-[950px] max-h-[90vh] overflow-y-auto">
+      {popup && (
+        <div className="fixed inset-0 bg-black/40 flex justify-center items-center">
+          <div className="bg-white p-5 rounded-xl w-[95%] max-w-[1200px] max-h-[90vh] overflow-y-auto">
+            <h1 className="text-xl font-semibold text-center mb-3">
+              DC_DIA Entry
+            </h1>
 
-      {/* HEADER */}
-      
-        <h2 className="text-2xl font-semibold text-center py-2">DC_DIA Entry</h2>
-      
+            {/* Header */}
+            <div className="grid grid-cols-18 bg-gray-100 text-xs font-semibold text-center border rounded">
+              {[
+                "#","DIA TYPE","D DIA","D ROLL","D WGT","R DIA","R ROLL","R WGT",
+                "DF WGT","D %","S ROLL 1","S WGT 1","S ROLL 2","S WGT 2",
+                "S ROLL 3","S WGT 3","S ROLL 4","S WGT 4"
+              ].map((h, i) => (
+                <span key={i} className="p-2 border">{h}</span>
+              ))}
+            </div>
 
-      {/* TABLE HEADER */}
-      <div className="grid grid-cols-18  border bg-gray-100 text-center  rounded font-semibold text-xs ">
-        <span className="border p-2 items-center ">#</span>
-        <span className="border p-2 items-center ">DIA TYPE</span>
-        <span className="border p-2 items-center">D DIA</span>
-        <span className="border p-2 items-center">D ROLL</span>
-        <span className="border p-2 items-center">D WGT</span>
-        <span className="border p-2 items-center">R DIA</span>
-        <span className="border p-2 items-center">R ROLL</span>
-        <span className="border p-2 items-center">R WGT</span>
-        <span className="border p-2 items-center">DF WGT</span>
-        <span className="border p-2 items-center">D %</span>
-        <span className="border p-2 items-center">S ROLL 1</span>
-        <span className="border p-2 items-center">S WGT 1</span>
-        <span className="border p-2 items-center">S ROLL 2</span>
-        <span className="border p-2 items-center">S WGT 2</span>
-        <span className="border p-2 items-center">S ROLL 3</span>
-        <span className="border p-2 items-center">S WGT 3</span>
-        <span className="border p-2 items-center">S ROLL 4</span>
-        <span className="border p-2 items-center">S WGT 4</span>
-      </div>
+            {/* Dynamic Rows */}
+            {diaSets.map((set, index) =>
+              num > index ? (
+                <div key={index} className="grid grid-cols-18 text-sm border-b">
 
-      {/* FORM ROWS */}
-              {diaSets.map((set, index) => (
-  <div
-    key={index}
-    className={`grid grid-cols-18  gap-0 text-sm ${
-      index % 2 === 0 ? "bg-gray-50" : "bg-white"
-    }`}
-  >
-    {/* Index */}
-    <span className="border p-2 text-center font-semibold flex items-center justify-center">
-      {index + 1}.
-    </span>
+                  {/* Index */}
+                  <span className="border p-2 text-center">{index + 1}</span>
 
-    {/* DIA TYPE */}
-    <input
-      className="border text-center "
-      value={userData[set.dia_type] || ""}
-      onChange={(e) => handleChange(set.dia_type, e.target.value)}
-    />
+                  {/* Editable fields */}
+                  {[
+                    set.dia_type, set.d_dia, set.d_roll, set.d_wgt,
+                    set.r_dia, set.r_roll, set.r_wgt
+                  ].map((field) => (
+                    <input
+                      key={field}
+                      className="border p-2 text-center"
+                      value={userData[index][field] || ""}
+                      onChange={(e) =>
+                        handleChange(index, field, e.target.value)
+                      }
+                    />
+                  ))}
 
-    {/* D_DIA */}
-    <input
-      className="border p-2 text-center"
-      value={userData[set.d_dia] || ""}
-      onChange={(e) => handleChange(set.d_dia, e.target.value)}
-    />
+                  {/* AUTO DF_WGT */}
+                  <span className="border p-2 text-center">
+                    {userData[index]?.[set.df_wgt] || ""}
+                  </span>
 
-    {/* D_ROLL */}
-    <input
-      className="border p-2 text-center"
-      value={userData[set.d_roll] || ""}
-      onChange={(e) => handleChange(set.d_roll, e.target.value)}
-    />
+                  {/* AUTO PREC */}
+                  <span className="border p-2 text-center">
+                    {userData[index]?.[set.d_prec] || ""}
+                  </span>
 
-    {/* D_WGT */}
-    <input
-      className="border p-2 text-center"
-      value={userData[set.d_wgt] || ""}
-      onChange={(e) => handleChange(set.d_wgt, e.target.value)}
-    />
+                  {/* Samples */}
+                  {[
+                    set.s_roll, set.s_wgt, set.s_roll2, set.s_wgt2,
+                    set.s_roll3, set.s_wgt3, set.s_roll4, set.s_wgt4
+                  ].map((field) => (
+                    <input
+                      key={field}
+                      className="border p-2 text-center"
+                      value={userData[index][field] || ""}
+                      onChange={(e) =>
+                        handleChange(index, field, e.target.value)
+                      }
+                    />
+                  ))}
+                </div>
+              ) : null
+            )}
 
-    {/* R_DIA */}
-    <input
-      className="border p-2 text-center"
-      value={userData[set.r_dia] || ""}
-      onChange={(e) => handleChange(set.r_dia, e.target.value)}
-    />
-
-    {/* R_ROLL */}
-    <input
-      className="border p-2 text-center"
-      value={userData[set.r_roll] || ""}
-      onChange={(e) => handleChange(set.r_roll, e.target.value)}
-    />
-
-    {/* R_WGT */}
-    <input
-      className="border p-2 text-center"
-      value={userData[set.r_wgt] || ""}
-      onChange={(e) => handleChange(set.r_wgt, e.target.value)}
-    />
-
-    {/* DF_WGT */}
-    <input
-      className="border p-2 text-center"
-      value={userData[set.df_wgt] || ""}
-      onChange={(e) => handleChange(set.df_wgt, e.target.value)}
-    />
-
-    {/* D_PREC */}
-    <input
-      className="border p-2 text-center"
-      value={userData[set.d_prec] || ""}
-      onChange={(e) => handleChange(set.d_prec, e.target.value)}
-    />
-
-    {/* S_ROLL 1 */}
-    <input
-      className="border p-2 text-center"
-      value={userData[set.s_roll] || ""}
-      onChange={(e) => handleChange(set.s_roll, e.target.value)}
-    />
-
-    {/* S_WGT 1 */}
-    <input
-      className="border p-2 text-center"
-      value={userData[set.s_wgt] || ""}
-      onChange={(e) => handleChange(set.s_wgt, e.target.value)}
-    />
-
-    {/* S_ROLL 2 */}
-    <input
-      className="border p-2 text-center"
-      value={userData[set.s_roll2] || ""}
-      onChange={(e) => handleChange(set.s_roll2, e.target.value)}
-    />
-
-    {/* S_WGT 2 */}
-    <input
-      className="border p-2 text-center"
-      value={userData[set.s_wgt2] || ""}
-      onChange={(e) => handleChange(set.s_wgt2, e.target.value)}
-    />
-
-    {/* S_ROLL 3 */}
-    <input
-      className="border p-2 text-center"
-      value={userData[set.s_roll3] || ""}
-      onChange={(e) => handleChange(set.s_roll3, e.target.value)}
-    />
-
-    {/* S_WGT 3 */}
-    <input
-      className="border p-2 text-center"
-      value={userData[set.s_wgt3] || ""}
-      onChange={(e) => handleChange(set.s_wgt3, e.target.value)}
-    />
-
-    {/* S_ROLL 4 */}
-    <input
-      className="border p-2 text-center"
-      value={userData[set.s_roll4] || ""}
-      onChange={(e) => handleChange(set.s_roll4, e.target.value)}
-    />
-
-    {/* S_WGT 4 */}
-    <input
-      className="border p-2 text-center"
-      value={userData[set.s_wgt4] || ""}
-      onChange={(e) => handleChange(set.s_wgt4, e.target.value)}
-    />
-  </div>
-))}
-
-        <button
-          onClick={() => setPopup(false)}
-          className="px-4 py-2 mt-2 text-center w-full bg-red-500 text-white rounded-lg hover:bg-red-700 cursor-pointer"
-        >
-          Close
-        </button>
-    </div>
-  </div>
-)}
-
+            <button
+              className="w-full bg-red-500 text-white p-2 mt-3 rounded"
+              onClick={() => setPopup(false)}
+            >
+              CLOSE
+            </button>
+          </div>
+        </div>
+      )}
     </section>
   );
 }

@@ -24,7 +24,7 @@ try {
   console.log(data)
   const fabric=await api.post('/inventory/selection',data)
   setUserData(fabric.data)
-console.log({"data":userData})
+
     
 } catch (error) {
   console.log("Outward err",error)

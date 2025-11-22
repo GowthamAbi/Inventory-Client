@@ -11,7 +11,6 @@ export default function Outward() {
 
   if (!selectData) return <h3>No data received</h3>;
 
-  // For combining multi rows' dc/color/roll/wgt into one outward row
   const labels = [
     "first",
     "second",
@@ -28,7 +27,6 @@ export default function Outward() {
     "thirteenth"
   ];
 
-  // For size popup fields
   const sizeKeys = [
     "first",
     "second",
@@ -44,16 +42,15 @@ export default function Outward() {
     "twelfth"
   ];
 
-  // --------------------------------
-  // 1️⃣ Build single outward row
-  // --------------------------------
+  // =======================================================
+  // BUILD OUTWARD ROW
+  // =======================================================
   useEffect(() => {
     if (!selectData || selectData.length === 0) {
       setUserData([]);
       return;
     }
 
-    // base from first row (fabric group, style, etc.)
     const base = selectData[0];
 
     const combined = {
@@ -65,90 +62,39 @@ export default function Outward() {
       ITEM_CODE: base.ITEM_CODE || "",
       ITEM_NAME: base.ITEM_NAME || "",
       STYLE: base.STYLE || "",
-
       DOC_NO: {},
       COLOR_NAME: {},
       RECD_DC_ROLL: {},
       RECD_DC_WGT: {},
       ROLL: {},
       WGT: {},
-
-      // SIZE from first row (if available)
-      SIZE: {
-  first_size: base.SIZE?.first_size || "",
-  first_size_pcs_wt: base.SIZE?.first_size_pcs_wt || "",
-  first_size_fab_wt: base.SIZE?.first_size_fab_wt || "",
-  first_size_pcs: base.SIZE?.first_size_pcs || "",
-
-  second_size: base.SIZE?.second_size || "",
-  second_size_pcs_wt: base.SIZE?.second_size_pcs_wt || "",
-  second_size_fab_wt: base.SIZE?.second_size_fab_wt || "",
-  second_size_pcs: base.SIZE?.second_size_pcs || "",
-
-  third_size: base.SIZE?.third_size || "",
-  third_size_pcs_wt: base.SIZE?.third_size_pcs_wt || "",
-  third_size_fab_wt: base.SIZE?.third_size_fab_wt || "",
-  third_size_pcs: base.SIZE?.third_size_pcs || "",
-
-  fourth_size: base.SIZE?.fourth_size || "",
-  fourth_size_pcs_wt: base.SIZE?.fourth_size_pcs_wt || "",
-  fourth_size_fab_wt: base.SIZE?.fourth_size_fab_wt || "",
-  fourth_size_pcs: base.SIZE?.fourth_size_pcs || "",
-
-  fifth_size: base.SIZE?.fifth_size || "",
-  fifth_size_pcs_wt: base.SIZE?.fifth_size_pcs_wt || "",
-  fifth_size_fab_wt: base.SIZE?.fifth_size_fab_wt || "",
-  fifth_size_pcs: base.SIZE?.fifth_size_pcs || "",
-
-  sixth_size: base.SIZE?.sixth_size || "",
-  sixth_size_pcs_wt: base.SIZE?.sixth_size_pcs_wt || "",
-  sixth_size_fab_wt: base.SIZE?.sixth_size_fab_wt || "",
-  sixth_size_pcs: base.SIZE?.sixth_size_pcs || "",
-
-  seventh_size: base.SIZE?.seventh_size || "",
-  seventh_size_pcs_wt: base.SIZE?.seventh_size_pcs_wt || "",
-  seventh_size_fab_wt: base.SIZE?.seventh_size_fab_wt || "",
-  seventh_size_pcs: base.SIZE?.seventh_size_pcs || "",
-
-  eighth_size: base.SIZE?.eighth_size || "",
-  eighth_size_pcs_wt: base.SIZE?.eighth_size_pcs_wt || "",
-  eighth_size_fab_wt: base.SIZE?.eighth_size_fab_wt || "",
-  eighth_size_pcs: base.SIZE?.eighth_size_pcs || "",
-
-  ninth_size: base.SIZE?.ninth_size || "",
-  ninth_size_pcs_wt: base.SIZE?.ninth_size_pcs_wt || "",
-  ninth_size_fab_wt: base.SIZE?.ninth_size_fab_wt || "",
-  ninth_size_pcs: base.SIZE?.ninth_size_pcs || "",
-
-  tenth_size: base.SIZE?.tenth_size || "",
-  tenth_size_pcs_wt: base.SIZE?.tenth_size_pcs_wt || "",
-  tenth_size_fab_wt: base.SIZE?.tenth_size_fab_wt || "",
-  tenth_size_pcs: base.SIZE?.tenth_size_pcs || "",
-
-  eleventh_size: base.SIZE?.eleventh_size || "",
-  eleventh_size_pcs_wt: base.SIZE?.eleventh_size_pcs_wt || "",
-  eleventh_size_fab_wt: base.SIZE?.eleventh_size_fab_wt || "",
-  eleventh_size_pcs: base.SIZE?.eleventh_size_pcs || "",
-
-  twelfth_size: base.SIZE?.twelfth_size || "",
-  twelfth_size_pcs_wt: base.SIZE?.twelfth_size_pcs_wt || "",
-  twelfth_size_fab_wt: base.SIZE?.twelfth_size_fab_wt || "",
-  twelfth_size_pcs: base.SIZE?.twelfth_size_pcs || ""
-}
-
+      SIZE: { ...base.SIZE }
     };
 
-    // If you still want to merge DOC_NO/COLOR/ROLL/WGT from multiple rows:
+    // --------------------------------------------
+    // ❤️ FIX 1: NORMALIZE COLOR FROM DB
+    // --------------------------------------------
     labels.forEach((label, index) => {
       const row = selectData[index];
 
-      // Safely read from each selectData row
-      combined.DOC_NO[`${label}_dcno`] = row?.DOC_NO || "";
-      combined.COLOR_NAME[`${label}_color`] = row?.COLOR_NAME || "";
-      combined.RECD_DC_ROLL[`${label}_roll`] = row?.RECD_DC_ROLL || "";
-      combined.RECD_DC_WGT[`${label}_wgt`] = row?.RECD_DC_WGT || "";
+      // If DB returns string (ex: "Blue"), convert to "first_color"
+      if (typeof row?.COLOR_NAME === "string") {
+        combined.COLOR_NAME[`${label}_color`] = row.COLOR_NAME;
+      } else {
+        combined.COLOR_NAME[`${label}_color`] =
+          row?.COLOR_NAME?.[`${label}_color`] || "";
+      }
 
-      // Outward editable fields
+      // Other fields
+      combined.DOC_NO[`${label}_dcno`] =
+        row?.DOC_NO?.[`${label}_dcno`] || row?.JOB_ORDER_NO || "";
+
+      combined.RECD_DC_ROLL[`${label}_roll`] =
+        row?.dc_dia?.[index]?.r_roll || "";
+
+      combined.RECD_DC_WGT[`${label}_wgt`] =
+        row?.dc_dia?.[index]?.r_wgt || "";
+
       combined.ROLL[`${label}_roll`] = "";
       combined.WGT[`${label}_wgt`] = "";
     });
@@ -156,9 +102,9 @@ export default function Outward() {
     setUserData([combined]);
   }, [selectData]);
 
-  // --------------------------------
-  // 2️⃣ Handlers
-  // --------------------------------
+  // ===========================================
+  // HANDLERS
+  // ===========================================
   const handleFieldChange = (field, value) => {
     setUserData((prev) => [{ ...prev[0], [field]: value }]);
   };
@@ -167,27 +113,53 @@ export default function Outward() {
     setUserData((prev) => [
       {
         ...prev[0],
-        [section]: {
-          ...prev[0][section],
-          [key]: value
-        }
+        [section]: { ...prev[0][section], [key]: value }
       }
     ]);
   };
 
+  function removeEmpty(obj) {
+    if (Array.isArray(obj)) {
+      return obj
+        .map(removeEmpty)
+        .filter((v) => v !== null && v !== undefined && v !== "");
+    }
+
+    if (obj && typeof obj === "object") {
+      const cleaned = {};
+      Object.entries(obj).forEach(([key, value]) => {
+        const val = removeEmpty(value);
+        if (
+          val !== "" &&
+          val !== null &&
+          val !== undefined &&
+          !(typeof val === "object" && Object.keys(val).length === 0)
+        ) {
+          cleaned[key] = val;
+        }
+      });
+      return cleaned;
+    }
+    return obj;
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await api.post("/inventory/outward", { items: userData });
-      alert("Outward saved successfully!");
+      const cleaned = removeEmpty(userData[0]);
+      await api.post("/inventory/outward", { items: [cleaned] });
 
+      alert("Outward saved successfully!");
       setSelectData([]);
       setUserData([]);
-    } catch (error) {
-      console.log("Outward Error:", error);
-      alert("Error saving outward.");
+    } catch (err) {
+      console.log("Error:", err);
+      alert("Saving failed.");
     }
   };
+
+
+
 
   // --------------------------------
   // 3️⃣ Render
@@ -232,6 +204,7 @@ export default function Outward() {
                 value={mainRow.DC_DIA}
                 onChange={(e) => handleFieldChange("DC_DIA", e.target.value)}
               />
+              
             </td>
 
             <td className="border px-2 py-1">
@@ -293,14 +266,14 @@ export default function Outward() {
       {/* COLOR POPUP           */}
       {/* ===================== */}
       {colorPopupRow !== null && (
-        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-          <div className="bg-white p-4 rounded-xl shadow-xl max-h-[90vh] overflow-y-auto w-[900px]">
-            <h2 className="text-xl font-semibold mb-3 text-center">
-              DcNo / Color / Roll / Wgt
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center">
+          <div className="bg-white p-4 rounded-xl w-[900px] overflow-y-auto">
+            <h2 className="text-xl font-bold text-center mb-3">
+              DC No / Color / Roll / Wgt
             </h2>
 
             <table className="w-full border text-sm text-center">
-              <thead className="bg-gray-200">
+              <thead>
                 <tr>
                   <th className="border px-2 py-1">S.No</th>
                   <th className="border px-2 py-1">DC No</th>
@@ -313,54 +286,68 @@ export default function Outward() {
               </thead>
 
               <tbody>
-  {selectData.map((item, i) => {
-    const rollKey = `${labels[i]}_roll`;
-    const wgtKey = `${labels[i]}_wgt`;
+                {selectData.map((item, i) => {
+                  const rollKey = `${labels[i]}_roll`;
+                  const wgtKey = `${labels[i]}_wgt`;
+                  const colorKey = `${labels[i]}_color`;
 
-    return (
-      <tr key={i}>
-        <td className="border px-2 py-1">{i + 1}</td>
-        <td className="border px-2 py-1">{item.DOC_NO}</td>
-        <td className="border px-2 py-1">{item.COLOR_NAME}</td>
-        <td className="border px-2 py-1">{item.RECD_DC_ROLL}</td>
-        <td className="border px-2 py-1">{item.RECD_DC_WGT}</td>
+                  return (
+                    <tr key={i}>
+                      <td className="border px-2 py-1">{i + 1}</td>
+                      <td className="border px-2 py-1">
+                        {item.JOB_ORDER_NO}
+                      </td>
 
-        {/* NEW ROLL */}
-        <td className="border px-2 py-1">
-          <input
-            className="outline-none w-full px-1"
-            value={mainRow.ROLL?.[rollKey] || ""}
-            onChange={(e) =>
-              handleNestedChange("ROLL", rollKey, e.target.value)
-            }
-          />
-        </td>
+                      {/* ❤️ FIX 2: CORRECT COLOR BINDING */}
+                      <td className="border px-2 py-1">
+                        <input
+                          value={mainRow.COLOR_NAME?.[colorKey] || ""}
+                          onChange={(e) =>
+                            handleNestedChange(
+                              "COLOR_NAME",
+                              colorKey,
+                              e.target.value
+                            )
+                          }
+                        />
+                      </td>
 
-        {/* NEW WGT */}
-        <td className="border px-2 py-1">
-          <input
-            className="outline-none w-full px-1"
-            value={mainRow.WGT?.[wgtKey] || ""}
-            onChange={(e) =>
-              handleNestedChange("WGT", wgtKey, e.target.value)
-            }
-          />
-        </td>
-      </tr>
-    );
-  })}
-</tbody>
+                      <td className="border px-2 py-1">
+                        {item?.dc_dia?.[i]?.r_roll || ""}
+                      </td>
+                      <td className="border px-2 py-1">
+                        {item?.dc_dia?.[i]?.r_wgt || ""}
+                      </td>
 
+                      <td className="border px-2 py-1">
+                        <input
+                          value={mainRow.ROLL?.[rollKey] || ""}
+                          onChange={(e) =>
+                            handleNestedChange("ROLL", rollKey, e.target.value)
+                          }
+                        />
+                      </td>
+
+                      <td className="border px-2 py-1">
+                        <input
+                          value={mainRow.WGT?.[wgtKey] || ""}
+                          onChange={(e) =>
+                            handleNestedChange("WGT", wgtKey, e.target.value)
+                          }
+                        />
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
             </table>
 
-            <div className="flex justify-center mt-4">
-              <button
-                onClick={() => setColorPopupRow(null)}
-                className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-800"
-              >
-                Close
-              </button>
-            </div>
+            <button
+              onClick={() => setColorPopupRow(null)}
+              className="mt-4 bg-red-600 text-white px-4 py-2 rounded"
+            >
+              Close
+            </button>
           </div>
         </div>
       )}
