@@ -27,7 +27,7 @@ export default function List() {
     return String(colorName);
   };
 
-  const formatDCNo = (dcno) => {
+  const formatOrNo= (dcno) => {
     if (!dcno) return "";
     if (typeof dcno === "string") return dcno;
 
@@ -83,7 +83,7 @@ export default function List() {
   const searchText = search.toLowerCase();
 
   const filteredFabric = fabricList.filter((item) => {
-    const dc = formatDCNo(item.DOC_NO).toLowerCase();
+    const dc = formatOrNo(item.DOC_NO).toLowerCase();
     const color = formatColorName(item.COLOR_NAME).toLowerCase();
     const fabricGroup = (item.FABRIC_GROUP || "").toLowerCase();
     return (
@@ -94,18 +94,64 @@ export default function List() {
   });
 
   const filteredCutting = cuttingList.filter((item) => {
-    const dc = formatDCNo(item.DOC_NO).toLowerCase();
-    const color = formatColorName(item.COLOR_NAME).toLowerCase();
+    const dc = formatOrNo(item.ORDER_NO).toLowerCase();
     const itemName = (item.ITEM_NAME || "").toLowerCase();
     return (
       dc.includes(searchText) ||
-      color.includes(searchText) ||
       itemName.includes(searchText)
     );
+  }
+
+);
+
+   const calculateTotalWGT = (sizeObj) => {
+  if (!sizeObj) return 0;
+
+  let total = 0;
+
+  Object.keys(sizeObj).forEach((key) => {
+    if (key.endsWith("_wgt")) {
+      const val = Number(sizeObj[key]) || 0;
+      total += val;
+    }
   });
 
+  return total;
+};
+
+
+  const calculateTotalPCS = (sizeObj) => {
+  if (!sizeObj) return 0;
+
+  let total = 0;
+
+  Object.keys(sizeObj).forEach((key) => {
+    if (key.endsWith("_size_pcs")) {
+      const val = Number(sizeObj[key]) || 0;
+      total += val;
+    }
+  });
+
+  return total;
+};
+
+ const calculateTotalROLL = (sizeObj) => {
+  if (!sizeObj) return 0;
+
+  let total = 0;
+
+  Object.keys(sizeObj).forEach((key) => {
+    if (key.endsWith("_roll")) {
+      const val = Number(sizeObj[key]) || 0;
+      total += val;
+    }
+    
+  });
+  return total;
+ }
+
   return (
-    <div className="uppercase p-6 mx-auto max-w-5xl flex flex-col gap-10">
+    <div className="uppercase p-6 mx-auto flex flex-col gap-10">
 
       {/* SEARCH BAR */}
       <input
@@ -124,6 +170,8 @@ export default function List() {
       {/* ERROR */}
       {error && <p className="text-center text-red-600">{error}</p>}
 
+
+<div className="flex gap-4">
       {/* ---------------- FABRIC LIST ---------------- */}
       <div>
         <h2 className="text-xl font-semibold mb-2">Fabric Inward</h2>
@@ -148,7 +196,7 @@ export default function List() {
               {filteredFabric.map((item, index) => (
                 <tr key={index} className="border text-center">
                   <td className="border p-1">{index + 1}</td>
-                  <td className="border p-1">{formatDCNo(item.DOC_NO)}</td>
+                  <td className="border p-1">{formatOrNo(item.DOC_NO)}</td>
                   <td className="border p-1">{item.FABRIC_GROUP}</td>
                   <td className="border p-1">{formatColorName(item.COLOR_NAME)}</td>
                   <td className="border p-1">{item.SET_NO}</td>
@@ -173,9 +221,9 @@ export default function List() {
               <tr>
                 <th className="border p-2">S No</th>
                 <th className="border p-2">Order No</th>
-                <th className="border p-2">DC No</th>
+                
                 <th className="border p-2">Fabric Group</th>
-                <th className="border p-2">Color</th>
+                
                 <th className="border p-2">Set No</th>
                 <th className="border p-2">Item Name</th>
                 <th className="border p-2">Style</th>
@@ -189,22 +237,25 @@ export default function List() {
               {filteredCutting.map((item, index) => (
                 <tr key={index} className="border text-center">
                   <td className="border p-1">{index + 1}</td>
-                  <td className="border p-1">{item.ORDER_NO}</td>
-                  <td className="border p-1">{formatDCNo(item.DOC_NO)}</td>
+                  <td className="border p-1">{formatOrNo(item.ORDER_NO)}</td>
+                 
                   <td className="border p-1">{item.FABRIC_GROUP}</td>
-                  <td className="border p-1">{formatColorName(item.COLOR_NAME)}</td>
+                  
                   <td className="border p-1">{item.SET_NO}</td>
                   <td className="border p-1">{item.ITEM_NAME}</td>
                   <td className="border p-1">{item.STYLE}</td>
-                  <td className="border p-1">{formatValue(item.ROLL)}</td>
-                  <td className="border p-1">{formatValue(item.WGT)}</td>
-                  <td className="border p-1">{formatValue(item.PCS)}</td>
+                  <td className="border p-1">{calculateTotalROLL(item.ROLL)}</td>
+                  <td className="border p-1">{calculateTotalWGT(item.WGT)}</td>
+                  <td className="border p-1">{calculateTotalPCS(item.SIZE)}</td>
+
                 </tr>
               ))}
             </tbody>
           </table>
         )}
       </div>
+
+</div>
     </div>
   );
 }

@@ -97,68 +97,58 @@ export default function Print() {
 
         {/* ===================== FABRIC PRINT ===================== */}
         {fabric === "fabric" && (
-          <div className="grid grid-cols-6 border border-black uppercase text-center">
+          <div className="grid grid-cols-13 border border-black uppercase text-center">
 
-            <h1 className="col-span-6 border text-2xl">R AND R TEXTILE</h1>
-            <h1 className="col-span-6 border text-2xl">RRP3 FABRIC</h1>
+  {/* HEADER */}
+  <h1 className="col-span-13 border text-2xl">R AND R TEXTILE</h1>
+  <h1 className="col-span-13 border text-2xl">COLOR FABRIC RECEIVED DETAILS</h1>
 
-            {/* LEFT LABELS */}
-            <div className="col-span-1 grid grid-rows-6">
-              <div className="border">lot gsm</div>
-              <div className="border">r gsm</div>
-              <div className="border">dc no</div>
-              <div className="border">set no</div>
-              <div className="border">item</div>
-              <div className="border">size</div>
-            </div>
+  {/* DETAILS SECTION 1 */}
+  <div className="col-span-13 border text-2xl grid grid-cols-4">
+    <h1 className="border p-2">Process Name :</h1>
+    <h1 className="border p-2">DC No :</h1>
+    <h1 className="border p-2">Compact Name :</h1>
+    <h1 className="border p-2">Compact DC No :</h1>
+  </div>
 
-            {/* LEFT INPUTS */}
-            <div className="col-span-2 grid grid-rows-6">
-              <input className="border print:border-none" />
-              <input className="border print:border-none" />
-              <input className="border print:border-none" />
-              <input className="border print:border-none" />
-              <input className="border print:border-none" />
-              <input className="border print:border-none" />
-            </div>
+  {/* DETAILS SECTION 2 */}
+  <div className="col-span-13 border text-2xl grid grid-cols-3">
+    <h1 className="border p-2">Fabric Group :</h1>
+    <h1 className="border p-2">Color :</h1>
+    <h1 className="border p-2">Set No :</h1>
+  </div>
 
-            {/* RIGHT LABELS */}
-            <div className="col-span-1 grid grid-rows-6">
-              <div className="border">T Dia</div>
-              <div className="border">j or no</div>
-              <div className="border">c p no</div>
-              <div className="border">pcs</div>
-              <div className="border">date</div>
-              <div className="border">dia</div>
-            </div>
+  {/* TABLE HEADER ROW */}
 
-            {/* RIGHT INPUTS */}
-            <div className="col-span-2 grid grid-rows-6">
-              <input className="border print:border-none" />
-              <input className="border print:border-none" />
-              <input className="border print:border-none" />
-              <input className="border print:border-none" />
-              <input className="border print:border-none" />
-              <input className="border print:border-none" />
-            </div>
 
-            {/* QUALITY */}
-            <div className="col-span-6 grid grid-cols-6 mt-2">
-              <div className="border">quality</div>
-              <input className="border col-span-5 print:border-none" />
-            </div>
+  {/* LEFT SIDE (7 COLUMNS) */}
+ 
+    <h1 className=" grid grid-cols-1 border p-2">S No</h1>
+    <h1 className="grid grid-cols-1 border p-2">Type</h1>
+    <h1 className="grid grid-cols-1 border p-2">Job Order No</h1>
+    <h1 className="grid grid-cols-1 border p-2">Dia</h1>
+    <h1 className="grid grid-cols-1 border p-2">Dia Type</h1>
+    <h1 className="grid grid-cols-1 border p-2">Recd Roll</h1>
+    <h1 className="grid grid-cols-1 border p-2">Recd Wgt</h1>
+  
 
-            {/* TABLE HEADINGS */}
-            <div className="col-span-6 grid grid-cols-6 border mt-2">
-              <div className="border">s no</div>
-              <div className="border">batch no</div>
-              <div className="border">colour</div>
-              <div className="border">roll</div>
-              <div className="border">system weight</div>
-              <div className="border">physical weight</div>
-            </div>
+  {/* RIGHT SIDE (6 COLUMNS) */}
+ 
+    <h1 className=" grid grid-cols-1 border p-2 ml-2">sam roll 1</h1>
+    <h1 className=" grid grid-cols-1 border p-2">sam wgt 1</h1>
+    <h1 className=" grid grid-cols-1 border p-2 ml-2">sam roll 2</h1>
+    <h1 className=" grid grid-cols-1 border p-2 ">sam wgt 2</h1>
+    <h1 className=" grid grid-cols-1 border p-2 ml-2">sam roll 2</h1>
+    <h1 className=" grid grid-cols-1 border p-2">sam wgt 3</h1>
+  
 
-          </div>
+</div>
+
+
+  
+
+
+
         )}
 
 
@@ -265,7 +255,7 @@ export default function Print() {
     </div>
 
   </div>
-)}
+          )}
 
 
       </div>

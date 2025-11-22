@@ -219,19 +219,11 @@ export default function Outward() {
             <td className="border px-2 py-1">{mainRow._id}</td>
 
             <td className="border px-2 py-1">
-              <input
-                className="outline-none w-full px-1"
-                value={mainRow.FABRIC_GROUP}
-                onChange={(e) => handleFieldChange("FABRIC_GROUP", e.target.value)}
-              />
+              {mainRow.FABRIC_GROUP}
             </td>
 
             <td className="border px-2 py-1">
-              <input
-                className="outline-none w-full px-1"
-                value={mainRow.SET_NO}
-                onChange={(e) => handleFieldChange("SET_NO", e.target.value)}
-              />
+              {mainRow.SET_NO}
             </td>
 
             <td className="border px-2 py-1">

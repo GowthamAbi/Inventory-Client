@@ -33,7 +33,12 @@ console.log({"data":userData})
 
   const InwardData=["S.NO","DC NO","FABRIC GROUP","COLOR NAME","SET NO","DIA","ROLL","WEIGHT"]
 
-    const [selectedRow, setSelectedRow] = useState(null);
+const [selectedRow, setSelectedRow] = useState({
+  itemIndex: null,
+  rowIndex: null,
+});
+
+
 
 const addItem=()=>{
 setUserData([]),
@@ -85,60 +90,70 @@ setUserData([]),
     </button>
   </form>
 
-  {/* TABLE SECTION */}
-  <div className="max-w-6xl mx-auto mt-6 bg-white shadow-md rounded-2xl overflow-x-auto">
-    <table className="w-full border-collapse text-sm text-gray-700">
-      <thead className="bg-gray-100">
-        <tr>
-          {InwardData.map((col, index) => (
-            <th
-              key={index}
-              className="px-4 py-3 text-left font-semibold border-b border-gray-300 whitespace-nowrap"
-            >
-              {col}
-            </th>
-          ))}
-        </tr>
-      </thead>
 
-      <tbody>
-        {userData.map((item, index) => (
-          <tr
+  {/* TABLE SECTION */}
+<div className="max-w-6xl mx-auto mt-6 bg-white shadow-md rounded-2xl overflow-x-auto">
+  <table className="w-full border-collapse text-sm text-gray-700">
+    <thead className="bg-gray-100">
+      <tr>
+        {InwardData.map((col, index) => (
+          <th
             key={index}
-            className={`cursor-pointer text-center border-b border-gray-200 transition-all ${
-              selectedRow === index
-                ? "bg-blue-100"
-                : "hover:bg-gray-50"
-            }`}
-            onClick={() => (
-              setSelectData(pre=>[...pre,item]),
-              setSelectedRow(index)
-            )}
+            className="px-4 py-3 text-left font-semibold border-b border-gray-300 whitespace-nowrap"
           >
-            <td className="border px-4 py-2">{index + 1}</td>
-            <td className="border px-4 py-2">{item.DOC_NO}</td>
+            {col}
+          </th>
+        ))}
+      </tr>
+    </thead>
+
+    {/* ✅ Only ONE tbody */}
+    <tbody>
+      {userData.map((item, index) =>
+        item.dc_dia?.map((row, i) => (
+          <tr
+  key={`${index}-${i}`}
+  className={`cursor-pointer text-center border-b border-gray-200 transition-all ${
+    selectedRow.itemIndex === index && selectedRow.rowIndex === i
+      ? "bg-blue-100"
+      : "hover:bg-gray-50"
+  }`}
+  onClick={() => {
+    setSelectData((prev) => [...prev, item]);
+    setSelectedRow({ itemIndex: index, rowIndex: i });
+    
+  }}
+>
+            <td className="border px-4 py-2">{i + 1}</td>
+
+            {/* Repeat main item fields */}
+            <td className="border px-4 py-2">{item.JOB_ORDER_NO}</td>
             <td className="border px-4 py-2">{item.FABRIC_GROUP}</td>
             <td className="border px-4 py-2">{item.COLOR_NAME}</td>
             <td className="border px-4 py-2">{item.SET_NO}</td>
-            <td className="border px-4 py-2">{item.DC_DIA}</td>
-            <td className="border px-4 py-2">{item.RECD_DC_ROLL}</td>
-            <td className="border px-4 py-2">{item.RECD_DC_WGT}</td>
+
+            {/* DC_DIA row values */}
+            <td className="border px-4 py-2">{row.d_dia || "-"}</td>
+            <td className="border px-4 py-2">{row.d_roll || "-"}</td>
+            <td className="border px-4 py-2">{row.d_wgt || "-"}</td>
           </tr>
-        ))}
-      </tbody>
-    </table>
-  </div>
+        ))
+      )}
+    </tbody>
+  </table>
+</div>
+
 
   {/* BUTTON SECTION */}
   <div className="flex justify-center mt-6">
     <button
     onClick={addItem}
       className={`px-6 py-2 rounded-lg font-semibold text-white shadow transition-all ${
-        selectedRow !== null
-          ? "bg-blue-600 hover:bg-blue-700"
-          : "bg-gray-400 cursor-not-allowed"
-      }`}
-      disabled={selectedRow === null}
+  selectedRow.itemIndex !== null
+    ? "bg-blue-600 hover:bg-blue-700"
+    : "bg-gray-400 cursor-not-allowed"
+}`}
+     disabled={selectedRow.itemIndex === null}
     >
       Proceed
     </button>
