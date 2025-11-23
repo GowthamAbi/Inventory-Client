@@ -196,12 +196,12 @@ export default function List() {
               {filteredFabric.map((item, index) => (
                 <tr key={index} className="border text-center">
                   <td className="border p-1">{index + 1}</td>
-                  <td className="border p-1">{formatOrNo(item.DOC_NO)}</td>
+                  <td className="border p-1">{formatOrNo(item.JOB_ORDER_NO)}</td>
                   <td className="border p-1">{item.FABRIC_GROUP}</td>
                   <td className="border p-1">{formatColorName(item.COLOR_NAME)}</td>
                   <td className="border p-1">{item.SET_NO}</td>
-                  <td className="border p-1">{formatValue(item.RECD_DC_ROLL)}</td>
-                  <td className="border p-1">{formatValue(item.RECD_DC_WGT)}</td>
+                  <td className="border p-1">{formatValue(item.dc_dia?.[0]?.r_roll || 0)}</td>
+                  <td className="border p-1">{formatValue(item.dc_dia?.[0]?.r_wgt || 0)}</td>
                 </tr>
               ))}
             </tbody>

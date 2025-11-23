@@ -140,7 +140,7 @@ const totals = data?.dc_dia?.reduce(
             <h1 className="col-span-13 border text-2xl py-2">COLOR FABRIC RECEIVED DETAILS</h1>
 
             <div className="col-span-13 border text-xl grid grid-cols-4">
-              <h1 className="border p-2">Process Name : {safeDisplay(data.PRCESS_NAME)}</h1>
+              <h1 className="border p-2">Process Name : {safeDisplay(data.PROCESS_NAME)}</h1>
               <h1 className="border p-2">DC No : {safeDisplay(data.PROCESS_DC_NO)}</h1>
               <h1 className="border p-2">Compact Name : {safeDisplay(data.COMPACT_NAME)}</h1>
               <h1 className="border p-2">Compact DC No : {safeDisplay(data.COMPACT_NO)}</h1>
@@ -352,6 +352,70 @@ const totals = data?.dc_dia?.reduce(
               </table>
             </div>
 
+            <div className="col-span-6 mt-2">
+              <table className="w-full border text-center">
+                <thead className="bg-gray-100 font-semibold">
+                  <tr>
+                    <th className="border p-2">s no</th>
+                    <th className="border p-2">Size</th>
+                    <th className="border p-2">pcs wt</th>
+                    <th className="border p-2">pcs</th>
+                    <th className="border p-2">total wt</th>
+                    <th className="border p-2">remarks</th>
+                  </tr>
+                </thead>
+
+               <tbody>
+  {labels.map((label, index) => (
+    <React.Fragment key={index}>
+
+      {/* MAIN ROW (First row) */}
+      
+        
+    
+
+      {/* SUB ROWS (data rows) */}
+      {userData.map((item, idx) => {
+        const sizeValue = item.SIZE?.[`${label}_size`];
+        const pcswtValue = item.SIZE?.[`${label}_size_pcs_wt`];
+        const pcsValue = item.SIZE?.[`${label}_size_pcs`];
+        const fabwtValue = item.SIZE?.[`${label}_size_fab_wt`];
+
+        // skip empty rows
+        if (!sizeValue && !pcswtValue && !pcsValue && !fabwtValue) return null;
+
+        return (
+          <tr key={`${idx}-${label}`} className="bg-gray-50">
+          <td className="border p-1">{index + 1}</td>
+            
+
+            <td className="border p-1">{sizeValue || ""}</td>
+            <td className="border p-1">{pcswtValue || ""}</td>
+            <td className="border p-1">{pcsValue || ""}</td>
+            <td className="border p-1">{fabwtValue || ""}</td>
+            <td className="border p-1"></td>
+          </tr>
+        );
+      })}
+
+    </React.Fragment>
+  ))}
+</tbody>
+
+              </table>
+            </div>
+
+            <div className="col-span-6 mt-2 flex justify-around">
+                <div>
+                  <h1 className="font-semibold">Prepared By</h1>
+                  <div className="mt-12 border-t border-dotted pt-4 w-32 mx-auto"></div>
+                </div>
+
+                <div>
+                  <h1 className="font-semibold">Color Fabric Warehouse Incharge</h1>
+                  <div className="mt-12 border-t border-dotted pt-4 w-64 mx-auto"></div>
+                </div>
+            </div>
           </div>
         )}
 

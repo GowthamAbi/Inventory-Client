@@ -21,7 +21,7 @@ const{setSelectData}=useContext(DataContext)
   const handleSubmit=async(e)=>{
 e.preventDefault()
 try {
-  console.log(data)
+  console.log("Data",data)
   const fabric=await api.post('/inventory/selection',data)
   setUserData(fabric.data)
 
@@ -133,9 +133,9 @@ setUserData([]),
             <td className="border px-4 py-2">{item.SET_NO}</td>
 
             {/* DC_DIA row values */}
-            <td className="border px-4 py-2">{row.d_dia || "-"}</td>
-            <td className="border px-4 py-2">{row.d_roll || "-"}</td>
-            <td className="border px-4 py-2">{row.d_wgt || "-"}</td>
+            <td className="border px-4 py-2">{row.r_dia || "-"}</td>
+            <td className="border px-4 py-2">{row.r_roll || "-"}</td>
+            <td className="border px-4 py-2">{row.r_wgt || "-"}</td>
           </tr>
         ))
       )}

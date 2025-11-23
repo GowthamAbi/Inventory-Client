@@ -11,7 +11,7 @@ export default function Inward() {
   const [num, setNum] = useState(0);
 
   const title = [
-    "PRCESS_NAME",
+    "PROCESS_NAME",
     "PROCESS_DC_NO",
     "COMPACT_NAME",
     "COMPACT_NO",
@@ -115,6 +115,8 @@ export default function Inward() {
     };
 
     try {
+
+      console.log("sendable",sendable)
       await api.post("/inventory/inward", sendable);
       alert("Saved Successfully!");
 
