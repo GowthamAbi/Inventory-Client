@@ -32,7 +32,7 @@ try {
 }
   }
 
-  const InwardData=["S.NO","DC NO","FABRIC GROUP","COLOR NAME","SET NO","DIA","ROLL","WEIGHT"]
+  const InwardData=["S.NO","DC NO","BATCH NO","FABRIC GROUP","COLOR NAME","SET NO","DIA","ROLL","WEIGHT"]
 
 const [selectedRow, setSelectedRow] = useState({
   itemIndex: null,
@@ -126,6 +126,7 @@ setUserData([]),
       <td className="border px-4 py-2">{index + 1}</td>
 
       <td className="border px-4 py-2">{item.JOB_ORDER_NO}</td>
+      <td className="border px-4 py-2">{item.BATCH_NO}</td>
       <td className="border px-4 py-2">{item.FABRIC_GROUP}</td>
       <td className="border px-4 py-2">{item.COLOR_NAME}</td>
       <td className="border px-4 py-2">{item.SET_NO}</td>

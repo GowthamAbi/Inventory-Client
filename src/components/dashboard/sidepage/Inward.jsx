@@ -67,39 +67,53 @@ export default function Inward() {
 
   // Proper handleChange with auto-calculation
   const handleChange = (index, key, value) => {
-    setUserData((prev) => {
-      const updated = [...prev];
-      const row = { ...updated[index], [key]: value };
+  setUserData((prev) => {
+    const updated = [...prev];
+    const row = { ...updated[index], [key]: value };
 
-      const s = diaSets[index];
+    const s = diaSets[index];
 
-      const d = Number(row[s.d_wgt]);
-      const r = Number(row[s.r_wgt]);
+    const d = Number(row[s.d_wgt]);
+    const r = Number(row[s.r_wgt]);
+    const recroll = Number(row[s.r_roll]);
+    
+    let smr = Number(row[s.s_roll]);
+    let smw = Number(row[s.s_wgt]);
 
-      const recroll = Number(row[s.r_roll]);
-      let smr = Number(row[s.s_roll]);
-      let smw = Number(row[s.s_wgt]);
-      
-      
     for (let i = 2; i <= 4; i++) {
       smr += Number(row[`s_roll${i}_${index + 1}`]);
       smw += Number(row[`s_wgt${i}_${index + 1}`]);
     }
 
-      if (Number.isFinite(d) && Number.isFinite(r)) {
-        row[s.df_wgt] = d - r;
-        row[s.d_prec] = d !== 0 ? (((d - r) / d) * 100).toFixed(2) : "";
-      }
 
-      if (Number.isFinite(recroll) && Number.isFinite(r) && Number.isFinite(smr) && Number.isFinite(smw)) {
-        row[s.t_roll] = recroll + smr;
-        row[s.t_wgt] = r+smw;
-      }
 
-      updated[index] = row;
-      return updated;
-    });
-  };
+    // AUTO TOTAL ROLL & WEIGHT
+    if (
+      Number.isFinite(recroll) &&
+      Number.isFinite(r) &&
+      Number.isFinite(smr) &&
+      Number.isFinite(smw)
+    ) {
+      row[s.t_roll] = recroll + smr;
+      let tr = r + smw;
+      row[s.t_wgt]=(tr).toFixed(2)
+    }
+
+      const tr = Number(row[s.t_wgt]);
+    // AUTO DF_WGT & %
+    if (Number.isFinite(d) && Number.isFinite(tr)) {
+      row[s.df_wgt] = (d - tr).toFixed(2);
+      row[s.d_prec] = d !== 0 ? ((((d - r) / d) * 100).toFixed(3)) : "";
+    }
+
+    // ALWAYS AUTO-FILL BATCH NUMBER
+    row[s.batch_no] = `25-26/${updated[0]?.JOB_ORDER_NO || ""}/${updated[0]?.COLOR_NAME || ""}/${row[s.d_dia] || ""}/${index + 1}`;
+
+    updated[index] = row;
+    return updated;
+  });
+};
+
 
   // Submit data
   const handleSubmit = async (e) => {
@@ -108,7 +122,7 @@ export default function Inward() {
     const dc_dia = userData.map((row, i) => {
       const f = diaSets[i];
       return {
-        dia_type: row[f.dia_type] || null,
+        dia_type: row[f.dia_type] || 0,
         d_dia: row[f.d_dia] || null,
         d_roll: row[f.d_roll] || null,
         d_wgt: row[f.d_wgt] || null,
@@ -233,9 +247,17 @@ export default function Inward() {
                   {/* Index */}
                   <span className="border p-2 text-center">{index + 1}</span>
 
-                  <span className="border p-2 text-center break-all ">
-                   {`25-26/${userData[0]?.JOB_ORDER_NO || ""}/${userData[0]?.COLOR_NAME || ""}/${userData[index]?.[set.d_dia] || ""} /${index+1 }`}
-                  </span>
+                
+                   {/*<input type="text" 
+                   value={`25-26/${userData[0]?.JOB_ORDER_NO || ""}/${userData[0]?.COLOR_NAME || ""}/${userData[index]?.[set.d_dia] || ""} /${index+1 }`}
+                   />*/}
+                   <input className="border  text-center break-all h-16 text-wrap "
+  value={userData[index]?.[set.batch_no] ?? ""}
+  onChange={(e) =>
+    handleChange(index, set.batch_no, e.target.value)
+  }
+/>
+
 
 
                   {/* Editable fields */}

@@ -57,12 +57,14 @@ export default function Outward() {
       _id: base._id || "",
       DATE: base.DATE || "",
       FABRIC_GROUP: base.FABRIC_GROUP || "",
+      BATCH_NO:base.BATCH_NO || "",
       SET_NO: base.SET_NO || "",
       D_DIA: base.D_DIA || "",
       ITEM_CODE: base.ITEM_CODE || "",
       ITEM_NAME: base.ITEM_NAME || "",
       STYLE: base.STYLE || "",
       DOC_NO: {},
+      
       COLOR_NAME: {},
       RECD_DC_ROLL: {},
       RECD_DC_WGT: {},
@@ -88,6 +90,7 @@ export default function Outward() {
       // Other fields
       combined.DOC_NO[`${label}_dcno`] =
         row?.DOC_NO?.[`${label}_dcno`] || row?.JOB_ORDER_NO || "";
+
 
       combined.RECD_DC_ROLL[`${label}_roll`] =
         row?.dc_dia?.[index]?.r_roll || "";
@@ -273,6 +276,7 @@ export default function Outward() {
                 <tr>
                   <th className="border px-2 py-1">S.No</th>
                   <th className="border px-2 py-1">DC No</th>
+                  <th className="border px-2 py-1">BATCH No</th>
                   <th className="border px-2 py-1">Color</th>
                   <th className="border px-2 py-1">Recv Roll</th>
                   <th className="border px-2 py-1">Recv Wgt</th>
@@ -292,6 +296,9 @@ export default function Outward() {
                       <td className="border px-2 py-1">{i + 1}</td>
                       <td className="border px-2 py-1">
                         {item.JOB_ORDER_NO}
+                      </td>
+                      <td className="border px-2 py-1">
+                        {item.BATCH_NO}
                       </td>
 
                       {/* ❤️ FIX 2: CORRECT COLOR BINDING */}

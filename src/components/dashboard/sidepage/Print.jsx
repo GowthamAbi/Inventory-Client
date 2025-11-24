@@ -64,17 +64,17 @@ const totals = data?.dc_dia?.reduce(
   (acc, row) => {
     acc.d_roll += Number(row.d_roll || 0);
     acc.d_wgt += Number(row.d_wgt || 0);
-    acc.r_roll += Number(row.r_roll || 0);
-    acc.r_wgt += Number(row.r_wgt || 0);
+    acc.t_roll += Number(row.t_roll || 0);
+    acc.t_wgt += Number(row.t_wgt || 0);
     acc.df_wgt += Number(row.df_wgt || 0);
-    acc.d_prec += Math.floor(Number(row.d_prec || 0));
+    acc.d_prec += (Number(row.d_prec || 0));
     return acc;
   },
   {
     d_roll: 0,
     d_wgt: 0,
-    r_roll: 0,
-    r_wgt: 0,
+    t_roll: 0,
+    t_wgt: 0,
     df_wgt: 0,
     d_prec: 0
   }
@@ -175,7 +175,7 @@ const totals = data?.dc_dia?.reduce(
                 <h1 className="border p-2">{safeDisplay(data.JOB_ORDER_NO)}</h1>
                 <h1 className="border p-2">{safeDisplay(row.d_dia)}</h1>
                 <h1 className="border p-2">{safeDisplay(row.dia_type)}</h1>
-                <h1 className="border p-2">{safeDisplay(row.r_dia)}</h1>
+                <h1 className="border p-2">{safeDisplay(row.r_roll)}</h1>
                 <h1 className="border p-2">{safeDisplay(row.r_wgt)}</h1>
 
                 <h1 className="border p-2">{safeDisplay(row.s_roll)}</h1>
@@ -204,8 +204,8 @@ const totals = data?.dc_dia?.reduce(
                 <h1 className="border p-2">{safeDisplay(row.d_roll)}</h1>
                 <h1 className=" col-span-2 border p-2">{safeDisplay(row.d_wgt)}</h1>
 
-                <h1 className="col-span-2 border p-2">{safeDisplay(row.r_roll)}</h1>
-                <h1 className="col-span-2 border p-2">{safeDisplay(row.r_wgt)}</h1>
+                <h1 className="col-span-2 border p-2">{safeDisplay(row.t_roll)}</h1>
+                <h1 className="col-span-2 border p-2">{safeDisplay(row.t_wgt)}</h1>
                 <h1 className="col-span-2 border p-2">{safeDisplay(row.df_wgt)}</h1>
                 <h1 className="col-span-2 border p-2">{safeDisplay(row.d_prec)}</h1>
               </React.Fragment>
@@ -216,19 +216,26 @@ const totals = data?.dc_dia?.reduce(
               <h1 className="border p-2">{totals.d_roll}</h1>
               <h1 className="col-span-2 border p-2">{totals.d_wgt}</h1>
 
-              <h1 className="col-span-2 border p-2">{totals.r_roll}</h1>
-              <h1 className="col-span-2 border p-2">{totals.r_wgt}</h1>
+              <h1 className="col-span-2 border p-2">{totals.t_roll}</h1>
+              <h1 className="col-span-2 border p-2">{totals.t_wgt}</h1>
 
               <h1 className="col-span-2 border p-2">{totals.df_wgt}</h1>
 
               <h1 className="col-span-2 border p-2">{totals.d_prec}</h1>
               
           <div className="col-span-13 border text-2xl">
-            {(totals.d_roll===totals.r_roll)?(
-              <div>
-                <h1>prepared by</h1>
-                <h1>LOT COMPLETED</h1>
-                <h1>color fabric warehouse incharge </h1>
+            {(totals.d_roll===totals.t_roll)?(
+              <div className="grid grid-cols-3 text-center pt-4">
+                <div>
+                  <h1 className="font-semibold">prepared by</h1>
+                <div className="mt-12 border-t border-dotted pt-4 w-32 mx-auto"></div>
+                  </div>
+                <h1 className="font-semibold">LOT COMPLETED</h1>
+
+                <div>
+    <h1 className="font-semibold">Color Fabric Warehouse Incharge</h1>
+    <div className="mt-12 border-t border-dotted pt-4 w-64 mx-auto"></div>
+  </div>
               </div>):
               (
 <div className="grid grid-cols-3 text-center pt-4">
