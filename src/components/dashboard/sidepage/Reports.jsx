@@ -1,84 +1,82 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import api from "../../../services/api";
 
 function Reports() {
-  const [balanceData, setBalanceData] = useState(null);
+  const [balanceData, setBalanceData] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const getBalance = async () => {
-    setLoading(true);
-    try {
-      const res = await api.get("/inventory/reports");
-      setBalanceData(res.data);
-    } catch (error) {
-      console.error("Error:", error);
-      alert("Error fetching balance");
-    }
-    setLoading(false);
-  };
+  const handlePrint = () => window.print();
+
+  useEffect(() => {
+    const getBalance = async () => {
+      setLoading(true);
+      try {
+        const res = await api.get("/inventory/reports");
+        setBalanceData(res.data);
+        console.log("data", res.data);
+      } catch (error) {
+        console.error("Error:", error);
+        alert("Error fetching balance");
+      }
+      setLoading(false);
+    };
+
+    getBalance();
+  }, []);
 
   return (
-    <div style={{ padding: "20px" }}>
-      <h2>Fabric Balance</h2>
+    <div className="p-4 mx-auto max-w-8xl">
 
-      <button onClick={getBalance}>
-        {loading ? "Loading..." : "Get Balance"}
+      {/* Print Button */}
+      <button
+        onClick={handlePrint}
+        className="no-print bg-blue-600 text-white px-4 py-2 rounded mx-auto max-w-2xl cursor-pointer"
+      >
+        Print
       </button>
 
-      {/* SUMMARY */}
-      {balanceData && (
-        <div style={{ marginTop: "20px" }}>
-          <p><strong>Total Inward:</strong> {balanceData.totalInward}</p>
-          <p><strong>Total Outward:</strong> {balanceData.totalOutward}</p>
-          <p><strong>Balance:</strong> {balanceData.balance}</p>
-        </div>
-      )}
+      {/* PRINT CONTENT */}
+      <div id="print-area" className="print-container no-print-overflow mx-auto">
 
-      {/* TABLE */}
-      {balanceData?.rows?.length > 0 && (
-        <table
-          style={{
-            marginTop: "20px",
-            borderCollapse: "collapse",
-            width: "100%",
-          }}
-        >
+        <h2 className="text-xl font-semibold text-center mb-3 no-print">
+          Fabric Balance Report
+        </h2>
+
+        <table className="w-full border-collapse">
           <thead>
-            <tr>
-              <th style={thStyle}>S.No</th>
-              <th style={thStyle}>Fabric Group</th>
-              <th style={thStyle}>Dia</th>
-              <th style={thStyle}>Roll</th>
-              <th style={thStyle}>Wgt</th>
+            <tr className="bg-gray-300">
+              <th className="border p-2 text-center">S NO</th>
+              <th className="border p-2 text-center">BATCH NO</th>
+              <th className="border p-2 text-center">Fabric Group</th>
+              <th className="border p-2 text-center">Colour Name</th>
+              <th className="border p-2 text-center">Set No</th>
+              <th className="border p-2 text-center">Color Name</th>
+              <th className="border p-2 text-center">DIA</th>
+              <th className="border p-2 text-center">ROLL</th>
+              <th className="border p-2 text-center">WEIGHT</th>
             </tr>
           </thead>
 
           <tbody>
-            {balanceData.rows.map((row, index) => (
-              <tr key={index}>
-                <td style={tdStyle}>{index + 1}</td>
-                <td style={tdStyle}>{row.fabric_group}</td>
-                <td style={tdStyle}>{row.dia}</td>
-                <td style={tdStyle}>{row.roll}</td>
-                <td style={tdStyle}>{row.wgt}</td>
+            {balanceData.map((item, i) => (
+              <tr key={i} className="border">
+                <td className="border p-2 text-center break-all">{i+1}</td>
+                <td className="border p-2 text-center break-all">{item.BATCH_NO}</td>
+                <td className="border p-2 text-center">{item.FABRIC_GROUP}</td>
+                <td className="border p-2 text-center">{item.COLOR_NAME}</td>
+                <td className="border p-2 text-center">{item.SET_NO}</td>
+                <td className="border p-2 text-center">{item.COLOR_NAME}</td>
+                <td className="border p-2 text-center">{item.D_DIA}</td>
+                <td className="border p-2 text-center">{item.TOTAL_ROLL}</td>
+                <td className="border p-2 text-center">{item.TOTAL_WEIGHT}</td>
               </tr>
             ))}
           </tbody>
         </table>
-      )}
+
+      </div>
     </div>
   );
 }
-
-const thStyle = {
-  border: "1px solid #ccc",
-  padding: "8px",
-  background: "#f4f4f4",
-};
-
-const tdStyle = {
-  border: "1px solid #ccc",
-  padding: "8px",
-};
 
 export default Reports;
