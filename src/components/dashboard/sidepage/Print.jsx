@@ -84,25 +84,25 @@ const totals = data?.dc_dia?.reduce(
   
 
   return (
-    <div className="flex flex-col items-center py-4">
+    <div className="flex flex-col items-center py-4 mx-auto max-w-4xl">
 
       {/* SEARCH PANEL */}
       <div className="flex gap-2 items-center pb-4">
   
          {fabric === "fabric" ? (
-          <div>
-          <label>Enter JOB_ORDER_NO :</label>
+          <div className="flex gap-6 text-gray-400">
+          <label >Enter Job Order No :</label>
           <input
             type="text"
-            className="border px-2 outline-none"
+            className="border px-2 outline-none rounded-2xl text-center"
             value={order_no.JOB_ORDER_NO}
             onChange={(e) =>
               setOrder_no({ ...order_no, JOB_ORDER_NO: e.target.value })
             }
           /></div>):
-            <div>
-          <label>Enter ORDER_NO :</label>
-          <input type="text" className="border px-2 outline-none"
+            <div className="flex gap-6 text-gray-400">
+          <label>Enter Order No :</label>
+          <input type="text" className="border px-2 outline-none rounded-2xl text-center"
           value={order_no.ORDER_NO} 
           onChange={(e) => setOrder_no({ ...order_no, ORDER_NO: e.target.value }) } 
           />
@@ -110,7 +110,7 @@ const totals = data?.dc_dia?.reduce(
           }
 
   <button
-    className="bg-blue-500 text-white px-3 py-1 rounded"
+    className="bg-blue-500 text-white px-3 py-1 rounded-2xl cursor-pointer"
     onClick={() => (fabric === "fabric" ? fabricList() : cutting())}
   >
     Submit
@@ -119,11 +119,11 @@ const totals = data?.dc_dia?.reduce(
       {/* PRINT + DOWNLOAD */}
       {userData.length > 0 && (
         <div className="flex gap-3 pb-4">
-          <button onClick={handlePrint} className="bg-green-600 text-white px-3 py-1 rounded">
+          <button onClick={handlePrint} className="bg-green-600 text-white px-3 py-1 rounded cursor-pointer">
             Print
           </button>
 
-          <button onClick={handleDownload} className="bg-red-600 text-white px-3 py-1 rounded">
+          <button onClick={handleDownload} className="bg-red-600 text-white px-3 py-1 rounded cursor-pointer">
             Download PDF
           </button>
         </div>

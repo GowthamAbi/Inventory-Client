@@ -246,19 +246,12 @@ export default function Inward() {
 
                   {/* Index */}
                   <span className="border p-2 text-center">{index + 1}</span>
-
-                
-                   {/*<input type="text" 
-                   value={`25-26/${userData[0]?.JOB_ORDER_NO || ""}/${userData[0]?.COLOR_NAME || ""}/${userData[index]?.[set.d_dia] || ""} /${index+1 }`}
-                   />*/}
                    <input className="border  text-center break-all h-16 text-wrap "
-  value={userData[index]?.[set.batch_no] ?? ""}
-  onChange={(e) =>
-    handleChange(index, set.batch_no, e.target.value)
-  }
-/>
-
-
+                value={userData[index]?.[set.batch_no] ?? ""}
+                onChange={(e) =>
+                  handleChange(index, set.batch_no, e.target.value)
+                }
+              />
 
                   {/* Editable fields */}
                   {[

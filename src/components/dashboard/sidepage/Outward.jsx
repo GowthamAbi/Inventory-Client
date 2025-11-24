@@ -64,7 +64,7 @@ export default function Outward() {
       ITEM_NAME: base.ITEM_NAME || "",
       STYLE: base.STYLE || "",
       DOC_NO: {},
-      
+      BATCH_NO:{},
       COLOR_NAME: {},
       RECD_DC_ROLL: {},
       RECD_DC_WGT: {},
@@ -91,6 +91,8 @@ export default function Outward() {
       combined.DOC_NO[`${label}_dcno`] =
         row?.DOC_NO?.[`${label}_dcno`] || row?.JOB_ORDER_NO || "";
 
+      combined.BATCH_NO[`${label}_batchno`] =
+        row?.BATCH_NO?.[`${label}_batchno`] || row?.BATCH_NO || "";
 
       combined.RECD_DC_ROLL[`${label}_roll`] =
         row?.dc_dia?.[index]?.r_roll || "";

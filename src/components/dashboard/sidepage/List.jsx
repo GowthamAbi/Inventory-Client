@@ -200,8 +200,8 @@ export default function List() {
                   <td className="border p-1">{item.FABRIC_GROUP}</td>
                   <td className="border p-1">{formatColorName(item.COLOR_NAME)}</td>
                   <td className="border p-1">{item.SET_NO}</td>
-                  <td className="border p-1">{formatValue(item.dc_dia?.[0]?.r_roll || 0)}</td>
-                  <td className="border p-1">{formatValue(item.dc_dia?.[0]?.r_wgt || 0)}</td>
+                  <td className="border p-1">{formatValue(item.dc_dia?.[0]?.t_roll || 0)}</td>
+                  <td className="border p-1">{formatValue(item.dc_dia?.[0]?.t_wgt || 0)}</td>
                 </tr>
               ))}
             </tbody>
