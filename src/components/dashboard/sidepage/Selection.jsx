@@ -24,6 +24,7 @@ try {
   console.log("Data",data)
   const fabric=await api.post('/inventory/selection',data)
   setUserData(fabric.data)
+  console.log(fabric.data)
 
     
 } catch (error) {
@@ -109,37 +110,32 @@ setUserData([]),
 
     {/* ✅ Only ONE tbody */}
     <tbody>
-      {userData.map((item, index) =>
-        item.dc_dia?.map((row, i) => (
-          <tr
-  key={`${index}-${i}`}
-  className={`cursor-pointer text-center border-b border-gray-200 transition-all ${
-    selectedRow.itemIndex === index && selectedRow.rowIndex === i
-      ? "bg-blue-100"
-      : "hover:bg-gray-50"
-  }`}
-  onClick={() => {
-    setSelectData((prev) => [...prev, item]);
-    setSelectedRow({ itemIndex: index, rowIndex: i });
-    
-  }}
->
-            <td className="border px-4 py-2">{i + 1}</td>
+  {userData.map((item, index) => (
+    <tr
+      key={index}
+      className={`cursor-pointer text-center border-b border-gray-200 transition-all ${
+        selectedRow.itemIndex === index
+          ? "bg-blue-100"
+          : "hover:bg-gray-50"
+      }`}
+      onClick={() => {
+        setSelectData((prev) => [...prev, item]);
+        setSelectedRow({ itemIndex: index });
+      }}
+    >
+      <td className="border px-4 py-2">{index + 1}</td>
 
-            {/* Repeat main item fields */}
-            <td className="border px-4 py-2">{item.JOB_ORDER_NO}</td>
-            <td className="border px-4 py-2">{item.FABRIC_GROUP}</td>
-            <td className="border px-4 py-2">{item.COLOR_NAME}</td>
-            <td className="border px-4 py-2">{item.SET_NO}</td>
+      <td className="border px-4 py-2">{item.JOB_ORDER_NO}</td>
+      <td className="border px-4 py-2">{item.FABRIC_GROUP}</td>
+      <td className="border px-4 py-2">{item.COLOR_NAME}</td>
+      <td className="border px-4 py-2">{item.SET_NO}</td>
+      <td className="border px-4 py-2">{item.D_DIA}</td>
+      <td className="border px-4 py-2">{item.TOTAL_ROLL}</td>
+      <td className="border px-4 py-2">{item.TOTAL_WEIGHT}</td>
+    </tr>
+  ))}
+</tbody>
 
-            {/* DC_DIA row values */}
-            <td className="border px-4 py-2">{row.r_dia || "-"}</td>
-            <td className="border px-4 py-2">{row.r_roll || "-"}</td>
-            <td className="border px-4 py-2">{row.r_wgt || "-"}</td>
-          </tr>
-        ))
-      )}
-    </tbody>
   </table>
 </div>
 

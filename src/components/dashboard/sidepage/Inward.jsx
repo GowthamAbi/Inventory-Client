@@ -36,6 +36,9 @@ export default function Inward() {
     "SAM_WGT2",
     "SAM_ROLL 3",
     "SAM_WGT3",
+    "TOTAL_ROLL",
+    "TOTAL_WEIGHT",
+    "BATCH_NO"
   ];
 
   // Dynamic field names for 10 rows
@@ -57,6 +60,9 @@ export default function Inward() {
     s_wgt3: `s_wgt3_${i + 1}`,
     s_roll4: `s_roll4_${i + 1}`,
     s_wgt4: `s_wgt4_${i + 1}`,
+    t_roll:`t_roll_${i + 1}`,
+    t_wgt:`t_wgt_${i + 1}`,
+    batch_no:`batch_no_${i + 1}`,
   }));
 
   // Proper handleChange with auto-calculation
@@ -70,9 +76,24 @@ export default function Inward() {
       const d = Number(row[s.d_wgt]);
       const r = Number(row[s.r_wgt]);
 
+      const recroll = Number(row[s.r_roll]);
+      let smr = Number(row[s.s_roll]);
+      let smw = Number(row[s.s_wgt]);
+      
+      
+    for (let i = 2; i <= 4; i++) {
+      smr += Number(row[`s_roll${i}_${index + 1}`]);
+      smw += Number(row[`s_wgt${i}_${index + 1}`]);
+    }
+
       if (Number.isFinite(d) && Number.isFinite(r)) {
         row[s.df_wgt] = d - r;
         row[s.d_prec] = d !== 0 ? (((d - r) / d) * 100).toFixed(2) : "";
+      }
+
+      if (Number.isFinite(recroll) && Number.isFinite(r) && Number.isFinite(smr) && Number.isFinite(smw)) {
+        row[s.t_roll] = recroll + smr;
+        row[s.t_wgt] = r+smw;
       }
 
       updated[index] = row;
@@ -104,6 +125,9 @@ export default function Inward() {
         s_wgt3: row[f.s_wgt3] || null,
         s_roll4: row[f.s_roll4] || null,
         s_wgt4: row[f.s_wgt4] || null,
+        t_roll: row[f.t_roll] || null,
+        t_wgt: row[f.t_wgt] || null,
+        batch_no:row[f.batch_no] || null
       };
     });
 
@@ -120,7 +144,7 @@ export default function Inward() {
       await api.post("/inventory/inward", sendable);
       alert("Saved Successfully!");
 
-      setUserData(Array.from({ length: 10 }, () => ({})));
+      
       setPopup(false);
       setNum(0);
     } catch (error) {
@@ -179,33 +203,44 @@ export default function Inward() {
       {/* POPUP */}
       {popup && (
         <div className="fixed inset-0 bg-black/40 flex justify-center items-center">
-          <div className="bg-white p-5 rounded-xl w-[95%] max-w-[1200px] max-h-[90vh] overflow-y-auto">
+          <div className="bg-white p-5 rounded-xl w-full max-h-[90vh] overflow-y-auto  overflow-x-auto">
             <h1 className="text-xl font-semibold text-center mb-3">
               DC_DIA Entry
             </h1>
 
             {/* Header */}
-            <div className="grid grid-cols-18 bg-gray-100 text-xs font-semibold text-center border rounded">
-              {[
-                "#","DIA TYPE","D DIA","D ROLL","D WGT","R DIA","R ROLL","R WGT",
-                "DF WGT","D %","S ROLL 1","S WGT 1","S ROLL 2","S WGT 2",
-                "S ROLL 3","S WGT 3","S ROLL 4","S WGT 4"
-              ].map((h, i) => (
-                <span key={i} className="p-2 border">{h}</span>
-              ))}
-            </div>
+<div className="grid grid-cols-21 bg-gray-100 text-xs font-semibold text-center border rounded w-full sticky top-0 z-10">
+  {[
+    "#","BATCH_NO","DIA TYPE","D DIA","D ROLL","D WGT","R DIA","R ROLL","R WGT",
+    "DF WGT","D %","S ROLL 1","S WGT 1","S ROLL 2","S WGT 2",
+    "S ROLL 3","S WGT 3","S ROLL 4","S WGT 4","TOTAL ROLL","TOTAL WGT"
+  ].map((h, i) => (
+    <span
+      key={i}
+      className="p-2 border  break-words whitespace-normal leading-tight text-center"
+    >
+      {h}
+    </span>
+  ))}
+</div>
+
 
             {/* Dynamic Rows */}
             {diaSets.map((set, index) =>
               num > index ? (
-                <div key={index} className="grid grid-cols-18 text-sm border-b">
+                <div key={index} className="grid grid-cols-21 text-sm border-b">
 
                   {/* Index */}
                   <span className="border p-2 text-center">{index + 1}</span>
 
+                  <span className="border p-2 text-center break-all ">
+                   {`25-26/${userData[0]?.JOB_ORDER_NO || ""}/${userData[0]?.COLOR_NAME || ""}/${userData[index]?.[set.d_dia] || ""} /${index+1 }`}
+                  </span>
+
+
                   {/* Editable fields */}
                   {[
-                    set.dia_type, set.d_dia, set.d_roll, set.d_wgt,
+                     set.dia_type, set.d_dia, set.d_roll, set.d_wgt,
                     set.r_dia, set.r_roll, set.r_wgt
                   ].map((field) => (
                     <input
@@ -219,12 +254,12 @@ export default function Inward() {
                   ))}
 
                   {/* AUTO DF_WGT */}
-                  <span className="border p-2 text-center">
+                  <span className="border p-2 text-center text-wrap">
                     {userData[index]?.[set.df_wgt] || ""}
                   </span>
 
                   {/* AUTO PREC */}
-                  <span className="border p-2 text-center">
+                  <span className="border p-2 text-center text-wrap">
                     {userData[index]?.[set.d_prec] || ""}
                   </span>
 
@@ -242,6 +277,17 @@ export default function Inward() {
                       }
                     />
                   ))}
+
+                    {/* AUTO DF_WGT */}
+                  <span className="border p-2 text-center">
+                    {userData[index]?.[set.t_roll] || ""}
+                  </span>
+
+                  {/* AUTO PREC */}
+                  <span className="border p-2 text-center">
+                    {userData[index]?.[set.t_wgt] || ""}
+                  </span>
+
                 </div>
               ) : null
             )}

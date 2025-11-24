@@ -58,7 +58,7 @@ export default function Outward() {
       DATE: base.DATE || "",
       FABRIC_GROUP: base.FABRIC_GROUP || "",
       SET_NO: base.SET_NO || "",
-      DC_DIA: base.DC_DIA || "",
+      D_DIA: base.D_DIA || "",
       ITEM_CODE: base.ITEM_CODE || "",
       ITEM_NAME: base.ITEM_NAME || "",
       STYLE: base.STYLE || "",
@@ -174,7 +174,7 @@ export default function Outward() {
       <table className="min-w-full border text-sm">
         <thead>
           <tr>
-            <th className="border px-2 py-1">Id</th>
+            
             <th className="border px-2 py-1">Fabric Group</th>
             <th className="border px-2 py-1">Set No</th>
             <th className="border px-2 py-1">DC Dia</th>
@@ -188,7 +188,7 @@ export default function Outward() {
 
         <tbody>
           <tr>
-            <td className="border px-2 py-1">{mainRow._id}</td>
+            
 
             <td className="border px-2 py-1">
               {mainRow.FABRIC_GROUP}
@@ -199,11 +199,7 @@ export default function Outward() {
             </td>
 
             <td className="border px-2 py-1">
-              <input
-                className="outline-none w-full px-1"
-                value={mainRow.DC_DIA}
-                onChange={(e) => handleFieldChange("DC_DIA", e.target.value)}
-              />
+              {mainRow.D_DIA}
               
             </td>
 
@@ -313,10 +309,10 @@ export default function Outward() {
                       </td>
 
                       <td className="border px-2 py-1">
-                        {item?.dc_dia?.[i]?.r_roll || ""}
+                        {item.TOTAL_ROLL || ""}
                       </td>
                       <td className="border px-2 py-1">
-                        {item?.dc_dia?.[i]?.r_wgt || ""}
+                        {item.TOTAL_WEIGHT || ""}
                       </td>
 
                       <td className="border px-2 py-1">
