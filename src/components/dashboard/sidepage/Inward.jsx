@@ -47,7 +47,6 @@ export default function Inward() {
     d_dia: `d_dia_${i + 1}`,
     d_roll: `d_roll_${i + 1}`,
     d_wgt: `d_wgt_${i + 1}`,
-    r_dia: `r_dia_${i + 1}`,
     r_roll: `r_roll_${i + 1}`,
     r_wgt: `r_wgt_${i + 1}`,
     df_wgt: `df_wgt_${i + 1}`,
@@ -103,7 +102,7 @@ export default function Inward() {
     // AUTO DF_WGT & %
     if (Number.isFinite(d) && Number.isFinite(tr)) {
       row[s.df_wgt] = (d - tr).toFixed(2);
-      row[s.d_prec] = d !== 0 ? ((((d - r) / d) * 100).toFixed(3)) : "";
+      row[s.d_prec] = d !== 0 ? ((((d - tr) / d) * 100).toFixed(3)) : "";
     }
 
     // ALWAYS AUTO-FILL BATCH NUMBER
@@ -126,7 +125,7 @@ export default function Inward() {
         d_dia: row[f.d_dia] || null,
         d_roll: row[f.d_roll] || null,
         d_wgt: row[f.d_wgt] || null,
-        r_dia: row[f.r_dia] || null,
+ 
         r_roll: row[f.r_roll] || null,
         r_wgt: row[f.r_wgt] || null,
         df_wgt: row[f.df_wgt] || null,
@@ -223,9 +222,9 @@ export default function Inward() {
             </h1>
 
             {/* Header */}
-<div className="grid grid-cols-21 bg-gray-100 text-xs font-semibold text-center border rounded w-full sticky top-0 z-10">
+<div className="grid grid-cols-20 bg-gray-100 text-xs font-semibold text-center border rounded w-full sticky top-0 z-10">
   {[
-    "#","BATCH_NO","DIA TYPE","D DIA","D ROLL","D WGT","R DIA","R ROLL","R WGT",
+    "#","BATCH_NO","DIA TYPE","D DIA","D ROLL","D WGT","R ROLL","R WGT",
     "DF WGT","D %","S ROLL 1","S WGT 1","S ROLL 2","S WGT 2",
     "S ROLL 3","S WGT 3","S ROLL 4","S WGT 4","TOTAL ROLL","TOTAL WGT"
   ].map((h, i) => (
@@ -242,7 +241,7 @@ export default function Inward() {
             {/* Dynamic Rows */}
             {diaSets.map((set, index) =>
               num > index ? (
-                <div key={index} className="grid grid-cols-21 text-sm border-b">
+                <div key={index} className="grid grid-cols-20 text-sm border-b">
 
                   {/* Index */}
                   <span className="border p-2 text-center">{index + 1}</span>
@@ -256,7 +255,7 @@ export default function Inward() {
                   {/* Editable fields */}
                   {[
                      set.dia_type, set.d_dia, set.d_roll, set.d_wgt,
-                    set.r_dia, set.r_roll, set.r_wgt
+                     set.r_roll, set.r_wgt
                   ].map((field) => (
                     <input
                       key={field}
