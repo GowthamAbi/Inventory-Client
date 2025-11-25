@@ -9,8 +9,10 @@ export default function Inward() {
 
   const [popup, setPopup] = useState(false);
   const [num, setNum] = useState(0);
+  const [fabData,setFabData]=useState()
 
   const title = [
+    "JOB_ORDER_NO",
     "PROCESS_NAME",
     "PROCESS_DC_NO",
     "COMPACT_NAME",
@@ -19,7 +21,7 @@ export default function Inward() {
     "COLOR_NAME",
     "SET_NO",
     "RECORD_TYPE",
-    "JOB_ORDER_NO",
+    
     "DC_DIA",
     "S.NO",
     "DIA_TYPE",
@@ -154,10 +156,74 @@ export default function Inward() {
     try {
 
       console.log("sendable",sendable)
-      await api.post("/inventory/inward", sendable);
-      alert("Saved Successfully!");
 
-      
+
+     
+      const fabricData=await api.post("/inventory/inward", sendable);
+
+      if (fabricData.data) {
+    alert("Already Have a Data");
+
+    const db = fabricData.data;
+
+    setUserData(prev => {
+        const updated = [...prev];
+
+        // HEADER ROW
+        updated[0] = {
+            ...updated[0],
+            JOB_ORDER_NO: db.JOB_ORDER_NO,
+            PROCESS_NAME: db.PROCESS_NAME,
+            PROCESS_DC_NO: db.PROCESS_DC_NO,
+            COMPACT_NAME: db.COMPACT_NAME,
+            COMPACT_NO: db.COMPACT_NO,
+            FABRIC_GROUP: db.FABRIC_GROUP,
+            COLOR_NAME: db.COLOR_NAME,
+            SET_NO: db.SET_NO,
+            RECORD_TYPE: db.RECORD_TYPE
+        };
+
+        // MAP dc_dia → dynamic frontend keys
+        db.dc_dia.forEach((row, i) => {
+            const s = diaSets[i]; // dynamic field names
+            updated[i] = {
+                ...updated[i],
+                [s.dia_type]: row.dia_type,
+                [s.d_dia]: row.d_dia,
+                [s.d_roll]: row.d_roll,
+                [s.d_wgt]: row.d_wgt,
+
+                [s.r_roll]: row.r_roll,
+                [s.r_wgt]: row.r_wgt,
+                [s.df_wgt]: row.df_wgt,
+                [s.d_prec]: row.d_prec,
+
+                [s.s_roll]: row.s_roll,
+                [s.s_wgt]: row.s_wgt,
+                [s.s_roll2]: row.s_roll2,
+                [s.s_wgt2]: row.s_wgt2,
+                [s.s_roll3]: row.s_roll3,
+                [s.s_wgt3]: row.s_wgt3,
+                [s.s_roll4]: row.s_roll4,
+                [s.s_wgt4]: row.s_wgt4,
+
+                [s.t_roll]: row.t_roll,
+                [s.t_wgt]: row.t_wgt,
+                [s.batch_no]: row.batch_no
+            };
+        });
+
+        return updated;
+    });
+
+    setFabData(db);
+}
+
+else{
+          alert("Saved Successfully");
+      }
+
+     
       setPopup(false);
       setNum(0);
     } catch (error) {
@@ -182,7 +248,7 @@ export default function Inward() {
                 </label>
                 <input
                   className="border rounded p-2 w-2/3"
-                  value={userData[0][item] || ""}
+                  value={ userData[0][item] || ""}
                   onChange={(e) => handleChange(0, item, e.target.value)}
                 />
               </div>
@@ -246,7 +312,8 @@ export default function Inward() {
                   {/* Index */}
                   <span className="border p-2 text-center">{index + 1}</span>
                    <input className="border  text-center break-all h-16 text-wrap "
-                value={userData[index]?.[set.batch_no] ?? ""}
+                value={userData[index]?.[set.batch_no] || ""
+}
                 onChange={(e) =>
                   handleChange(index, set.batch_no, e.target.value)
                 }
@@ -260,7 +327,7 @@ export default function Inward() {
                     <input
                       key={field}
                       className="border p-2 text-center"
-                      value={userData[index][field] || ""}
+                        value={userData?.[index]?.[field] ?? ""}
                       onChange={(e) =>
                         handleChange(index, field, e.target.value)
                       }
