@@ -57,7 +57,6 @@ export default function Outward() {
       _id: base._id || "",
       DATE: base.DATE || "",
       FABRIC_GROUP: base.FABRIC_GROUP || "",
-      BATCH_NO:base.BATCH_NO || "",
       SET_NO: base.SET_NO || "",
       D_DIA: base.D_DIA || "",
       ITEM_CODE: base.ITEM_CODE || "",

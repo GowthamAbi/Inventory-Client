@@ -108,7 +108,7 @@ export default function Inward() {
     }
 
     // ALWAYS AUTO-FILL BATCH NUMBER
-    row[s.batch_no] = `25-26/${updated[0]?.JOB_ORDER_NO || ""}/${updated[0]?.COLOR_NAME || ""}/${row[s.d_dia] || ""}/${index + 1}`;
+    row[s.batch_no] = `25-26/${updated[0]?.JOB_ORDER_NO || ""}/${updated[0]?.COLOR_NAME || ""}/${row[s.d_dia] || ""}/${index + 1}/${updated[0]?.RECORD_TYPE || ""}`;
 
     updated[index] = row;
     return updated;
@@ -120,10 +120,10 @@ export default function Inward() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const dc_dia = userData.map((row, i) => {
+    const dc_dia = userData.slice(0, num).map((row, i) => {
       const f = diaSets[i];
       return {
-        dia_type: row[f.dia_type] || 0,
+        dia_type: row[f.dia_type] || null,
         d_dia: row[f.d_dia] || null,
         d_roll: row[f.d_roll] || null,
         d_wgt: row[f.d_wgt] || null,
@@ -158,66 +158,66 @@ export default function Inward() {
       console.log("sendable",sendable)
 
 
-     
-      const fabricData=await api.post("/inventory/inward", sendable);
+    
+const fabricData = await api.post("/inventory/inward", sendable);
+console.log(fabricData)
 
-      if (fabricData.data) {
-    alert("Already Have a Data");
+if (fabricData.data?.already) {
+  alert("Already Have a Data");
 
-    const db = fabricData.data;
+  const db = fabricData.data.data;
 
-    setUserData(prev => {
-        const updated = [...prev];
+  setNum(db.dc_dia.length);   // <-- FIX: show rows
 
-        // HEADER ROW
-        updated[0] = {
-            ...updated[0],
-            JOB_ORDER_NO: db.JOB_ORDER_NO,
-            PROCESS_NAME: db.PROCESS_NAME,
-            PROCESS_DC_NO: db.PROCESS_DC_NO,
-            COMPACT_NAME: db.COMPACT_NAME,
-            COMPACT_NO: db.COMPACT_NO,
-            FABRIC_GROUP: db.FABRIC_GROUP,
-            COLOR_NAME: db.COLOR_NAME,
-            SET_NO: db.SET_NO,
-            RECORD_TYPE: db.RECORD_TYPE
-        };
+  setUserData(prev => {
+    const updated = [...prev];
 
-        // MAP dc_dia → dynamic frontend keys
-        db.dc_dia.forEach((row, i) => {
-            const s = diaSets[i]; // dynamic field names
-            updated[i] = {
-                ...updated[i],
-                [s.dia_type]: row.dia_type,
-                [s.d_dia]: row.d_dia,
-                [s.d_roll]: row.d_roll,
-                [s.d_wgt]: row.d_wgt,
+    updated[0] = {
+      ...updated[0],
+      JOB_ORDER_NO: db.JOB_ORDER_NO,
+      PROCESS_NAME: db.PROCESS_NAME,
+      PROCESS_DC_NO: db.PROCESS_DC_NO,
+      COMPACT_NAME: db.COMPACT_NAME,
+      COMPACT_NO: db.COMPACT_NO,
+      FABRIC_GROUP: db.FABRIC_GROUP,
+      COLOR_NAME: db.COLOR_NAME,
+      SET_NO: db.SET_NO,
+      RECORD_TYPE: db.RECORD_TYPE
+    };
 
-                [s.r_roll]: row.r_roll,
-                [s.r_wgt]: row.r_wgt,
-                [s.df_wgt]: row.df_wgt,
-                [s.d_prec]: row.d_prec,
+    db.dc_dia.forEach((row, i) => {
+      const s = diaSets[i];
+      updated[i] = {
+        ...updated[i],
+        [s.dia_type]: row.dia_type,
+        [s.d_dia]: row.d_dia,
+        [s.d_roll]: row.d_roll,
+        [s.d_wgt]: row.d_wgt,
+        [s.r_roll]: row.r_roll,
+        [s.r_wgt]: row.r_wgt,
+        [s.df_wgt]: row.df_wgt,
+        [s.d_prec]: row.d_prec,
+        [s.s_roll]: row.s_roll,
+        [s.s_wgt]: row.s_wgt,
+        [s.s_roll2]: row.s_roll2,
+        [s.s_wgt2]: row.s_wgt2,
+        [s.s_roll3]: row.s_roll3,
+        [s.s_wgt3]: row.s_wgt3,
+        [s.s_roll4]: row.s_roll4,
+        [s.s_wgt4]: row.s_wgt4,
+        [s.t_roll]: row.t_roll,
+        [s.t_wgt]: row.t_wgt,
 
-                [s.s_roll]: row.s_roll,
-                [s.s_wgt]: row.s_wgt,
-                [s.s_roll2]: row.s_roll2,
-                [s.s_wgt2]: row.s_wgt2,
-                [s.s_roll3]: row.s_roll3,
-                [s.s_wgt3]: row.s_wgt3,
-                [s.s_roll4]: row.s_roll4,
-                [s.s_wgt4]: row.s_wgt4,
-
-                [s.t_roll]: row.t_roll,
-                [s.t_wgt]: row.t_wgt,
-                [s.batch_no]: row.batch_no
-            };
-        });
-
-        return updated;
+      };
     });
 
-    setFabData(db);
+    return updated;
+  });
+
+  setFabData(db);
 }
+
+
 
 else{
           alert("Saved Successfully");
@@ -238,7 +238,7 @@ else{
         {/* FIRST 9 FIELDS */}
         {title.map(
           (item, index) =>
-            index < 9 && (
+            index < 8 && (
               <div
                 key={index}
                 className="flex justify-between items-center border-b py-3"
@@ -254,6 +254,23 @@ else{
               </div>
             )
         )}
+
+                <div className="flex items-center border-b py-3">
+          <label className="w-1/3 text-gray-500">9. RECORD TYPE</label>   
+          <select
+  className="border rounded px-2 py-1"
+  defaultValue=""
+  onChange={(e) =>
+    handleChange(0, "RECORD_TYPE", e.target.value)
+  }
+>
+  <option value="" disabled>SELECT</option>
+  <option value="SAMPLE 1">SAMPLE 1</option>
+  <option value="SAMPLE 2">SAMPLE 2</option>
+  <option value="SAMPLE 3">SAMPLE 3</option>
+  <option value="SAMPLE 4">SAMPLE 4</option>
+  <option value="FINAL">FINAL</option>
+</select></div>
 
         {/* NO OF ROWS */}
         <div className="flex items-center border-b py-3">
